@@ -19,7 +19,8 @@ genotype-by-environment (GxE) idea is tested on its own and pre-registered befor
 | g2f-parentgca 0.1.0 | graded: 3 of 4 predictions + H1 held; **adopted** | **M4 (marker ridge + parent GCA, shrunk to own mean) 0.302**; new hybrids 0.120 |
 | g2f-newshrink 0.1.0 | graded: 4 of 5 predictions held, H1 failed; **not adopted** | new hybrids shifted +0.25 SD 0.303 (+0.0013 over M4, below the +0.01 bar) |
 | g2f-parentloc 0.1.0 | graded: 3 of 5 predictions held, H1 failed; **not adopted** | parent-by-location offset (k=20) 0.286 (**-0.0156** below M4; helps 2022/2023 but not the 2024 hold-out) |
-| g2f-ecreaction 0.1.0 | pre-registered, job queued | M4 plus a marker-by-environmental-covariate reaction norm (alpha chosen on 2022) |
+| g2f-ecreaction 0.1.0 | graded: 2 of 5 predictions held, H1 failed; **not adopted** | marker-by-covariate reaction norm: real within-env signal (spread 54% of M4's) but every positive weight hurts, so alpha*=0 and M7=M4 (0.302) |
+| g2f-gcablend 0.1.0 | pre-registered, job queued | tunes M4's marker-ridge/parent-GCA blend weight on 2022+2023; does it beat the a-priori 0.5 on 2024? |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -32,10 +33,11 @@ because every one-parent new hybrid in a trial shares the same seen tester, so m
 Inside each environment, new hybrids out-yield the seen ones by 0.46-0.68 SD (2024, 2022), while M4
 predicts a gap of about 0.25; shifting new hybrids up as a block helped 2022 but barely moved 2024.
 Four different ways of adding environment-specific structure on top of M4 -- a hybrid-by-location
-residual (M3), covariate-weighted refitting (g2f-envkernel), a parent-by-location offset
-(g2f-parentloc), and next a marker-by-covariate reaction norm (g2f-ecreaction) -- so far gain nothing,
-or hurt, on the 2024 hold-out, even when they help the within-period folds. See the result files in
-[`docs/`](docs/).
+residual (M3), covariate-weighted refitting (g2f-envkernel), a parent-by-location offset (g2f-parentloc),
+and a marker-by-covariate reaction norm (g2f-ecreaction) -- each gain nothing, or hurt, on the 2024
+hold-out, even when they help a within-period fold. The reaction norm in particular carries genuine
+within-season signal yet still fails to improve the forward ranking. So the entry stays M4; the next
+study instead tunes M4's own blend weight. See the result files in [`docs/`](docs/).
 
 ## Files
 
@@ -57,16 +59,19 @@ or hurt, on the 2024 hold-out, even when they help the within-period folds. See 
 - `docs/g2f-parentloc-0.1.0-prereg.md`, `docs/g2f-parentloc-0.1.0-result.md`, `g2f_parentloc.py`,
   `test_g2f_parentloc.py`: M6 = M4 plus each parent's shrunk past residual at the test environment's
   location, with the shrinkage chosen on the 2022 fold.
-- `docs/g2f-ecreaction-0.1.0-prereg.md`, `g2f_ecreaction.py`, `test_g2f_ecreaction.py`: M7 = M4 plus a
-  marker-by-environmental-covariate reaction norm (20 marker PCs x 10 EC PCs), added as a controlled
-  correction with the weight alpha chosen on the 2022 fold.
+- `docs/g2f-ecreaction-0.1.0-prereg.md`, `docs/g2f-ecreaction-0.1.0-result.md`, `g2f_ecreaction.py`,
+  `test_g2f_ecreaction.py`: M7 = M4 plus a marker-by-environmental-covariate reaction norm (20 marker PCs
+  x 10 EC PCs), added as a controlled correction with the weight alpha chosen on the 2022 fold.
+- `docs/g2f-gcablend-0.1.0-prereg.md`, `g2f_gcablend.py`, `test_g2f_gcablend.py`: varies M4's blend
+  weight over a grid, selects it on the mean of the 2022 and 2023 folds, and tests whether the tuned
+  weight beats the a-priori 0.5 on the 2024 answers.
 - `results/`: outputs of the sealed runs that each result grades (`g2f_baseline.json`,
   `g2f_envkernel.json`, `g2f_checkhybrid.json`, `g2f_parentgca.json`, `g2f_newshrink.json`,
-  `g2f_parentloc.json`, per-environment r and per-row prediction tables).
+  `g2f_parentloc.json`, `g2f_ecreaction.json`, per-environment r and per-row prediction tables).
 
 ```
 pip install numpy pandas
-python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction
+python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend
 python g2f_baseline.py --data-dir data --out-dir results
 python g2f_envkernel.py --data-dir data --out-dir results
 python g2f_checkhybrid.py --out-dir results
@@ -74,6 +79,7 @@ python g2f_parentgca.py --data-dir data --out-dir results
 python g2f_newshrink.py --data-dir data --out-dir results
 python g2f_parentloc.py --data-dir data --out-dir results
 python g2f_ecreaction.py --data-dir data --out-dir results
+python g2f_gcablend.py --data-dir data --out-dir results
 ```
 
 Data: Genomes to Fields 2024 Maize Genotype by Environment Prediction Competition release, CyVerse
