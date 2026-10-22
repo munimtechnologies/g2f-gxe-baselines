@@ -20,7 +20,7 @@ genotype-by-environment (GxE) idea is tested on its own and pre-registered befor
 | g2f-newshrink 0.1.0 | graded: 4 of 5 predictions held, H1 failed; **not adopted** | new hybrids shifted +0.25 SD 0.303 (+0.0013 over M4, below the +0.01 bar) |
 | g2f-parentloc 0.1.0 | graded: 3 of 5 predictions held, H1 failed; **not adopted** | parent-by-location offset (k=20) 0.286 (**-0.0156** below M4; helps 2022/2023 but not the 2024 hold-out) |
 | g2f-ecreaction 0.1.0 | graded: 2 of 5 predictions held, H1 failed; **not adopted** | marker-by-covariate reaction norm: real within-env signal (spread 54% of M4's) but every positive weight hurts, so alpha*=0 and M7=M4 (0.302) |
-| g2f-gcablend 0.1.0 | pre-registered, job queued | tunes M4's marker-ridge/parent-GCA blend weight on 2022+2023; does it beat the a-priori 0.5 on 2024? |
+| g2f-gcablend 0.1.0 | graded: all 3 predictions held, H1 failed; **keep a-priori 0.5** | tuning M4's blend weight on 2022+2023 picks w*=0.25, scoring 0.293 on 2024 (**-0.009** below the a-priori 0.5's 0.302); on 2024 the grid peaks at w=0.75 (0.3033) |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -36,8 +36,14 @@ Four different ways of adding environment-specific structure on top of M4 -- a h
 residual (M3), covariate-weighted refitting (g2f-envkernel), a parent-by-location offset (g2f-parentloc),
 and a marker-by-covariate reaction norm (g2f-ecreaction) -- each gain nothing, or hurt, on the 2024
 hold-out, even when they help a within-period fold. The reaction norm in particular carries genuine
-within-season signal yet still fails to improve the forward ranking. So the entry stays M4; the next
-study instead tunes M4's own blend weight. See the result files in [`docs/`](docs/).
+within-season signal yet still fails to improve the forward ranking. A final study then looked at M4
+itself: its marker-ridge/parent-GCA blend weight is fixed a priori at 0.5. Tuning that weight on the two
+training years (2022, 2023) picks w* = 0.25, which scores 0.293 on the 2024 answers -- 0.009 below the
+untuned 0.5 (0.302), itself within 0.0015 of the 2024 oracle weight (w = 0.75). The weight matters only
+for new hybrids (seen hybrids score 0.594 at every weight), and parent GCA's year-specific value makes
+the training years point it the wrong way, so the a-priori 0.5 is the safer forward choice. The entry
+therefore stays M4 at 0.5; the within-2024 tuning line is closed, and the next study waits for the 2026
+training release (opens 2026-11-16, a new data set). See the result files in [`docs/`](docs/).
 
 ## Files
 
@@ -62,12 +68,13 @@ study instead tunes M4's own blend weight. See the result files in [`docs/`](doc
 - `docs/g2f-ecreaction-0.1.0-prereg.md`, `docs/g2f-ecreaction-0.1.0-result.md`, `g2f_ecreaction.py`,
   `test_g2f_ecreaction.py`: M7 = M4 plus a marker-by-environmental-covariate reaction norm (20 marker PCs
   x 10 EC PCs), added as a controlled correction with the weight alpha chosen on the 2022 fold.
-- `docs/g2f-gcablend-0.1.0-prereg.md`, `g2f_gcablend.py`, `test_g2f_gcablend.py`: varies M4's blend
-  weight over a grid, selects it on the mean of the 2022 and 2023 folds, and tests whether the tuned
-  weight beats the a-priori 0.5 on the 2024 answers.
+- `docs/g2f-gcablend-0.1.0-prereg.md`, `docs/g2f-gcablend-0.1.0-result.md`, `g2f_gcablend.py`,
+  `test_g2f_gcablend.py`: varies M4's blend weight over a grid, selects it on the mean of the 2022 and
+  2023 folds, and tests whether the tuned weight beats the a-priori 0.5 on the 2024 answers.
 - `results/`: outputs of the sealed runs that each result grades (`g2f_baseline.json`,
   `g2f_envkernel.json`, `g2f_checkhybrid.json`, `g2f_parentgca.json`, `g2f_newshrink.json`,
-  `g2f_parentloc.json`, `g2f_ecreaction.json`, per-environment r and per-row prediction tables).
+  `g2f_parentloc.json`, `g2f_ecreaction.json`, `g2f_gcablend.json`, per-environment r and per-row
+  prediction tables).
 
 ```
 pip install numpy pandas

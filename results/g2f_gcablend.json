@@ -1,0 +1,173 @@
+{
+ "chosen": {
+  "per_year_argmax": {
+   "2022": 0.25,
+   "2023": 0.0,
+   "2024": 0.75
+  },
+  "train_mean_r": {
+   "w=0": 0.3814,
+   "w=0.25": 0.38335,
+   "w=0.5": 0.3808,
+   "w=0.75": 0.3689,
+   "w=1": 0.344
+  },
+  "w": 0.25
+ },
+ "folds": {
+  "2022": {
+   "fit": {
+    "cv_r": {
+     "10.0": 0.4251,
+     "100.0": 0.4983,
+     "1000.0": 0.5343,
+     "10000.0": 0.4984,
+     "100000.0": 0.3801,
+     "1000000.0": 0.2716
+    },
+    "gca_lambda": 1.0,
+    "gca_parents": 1824,
+    "lambda": 1000.0,
+    "ridge_hybrids": 4433,
+    "share_rows_hybrid_genotyped": 0.997,
+    "share_rows_hybrid_seen": 0.0689,
+    "share_rows_hybrid_seen_at_location": 0.0603,
+    "test_envs": 28,
+    "test_hybrids": 553,
+    "test_rows": 11838,
+    "train_envs": 217,
+    "train_hybrids": 4513,
+    "train_rows": 128079,
+    "w_default": 0.5
+   },
+   "grid": {
+    "w=0": 0.3257,
+    "w=0.25": 0.3304,
+    "w=0.5": 0.3262,
+    "w=0.75": 0.3036,
+    "w=1": 0.2551
+   }
+  },
+  "2023": {
+   "fit": {
+    "cv_r": {
+     "10.0": 0.415,
+     "100.0": 0.5138,
+     "1000.0": 0.5508,
+     "10000.0": 0.5156,
+     "100000.0": 0.4015,
+     "1000000.0": 0.3012
+    },
+    "gca_lambda": 1.0,
+    "gca_parents": 2252,
+    "lambda": 1000.0,
+    "ridge_hybrids": 4938,
+    "share_rows_hybrid_genotyped": 0.9901,
+    "share_rows_hybrid_seen": 0.9935,
+    "share_rows_hybrid_seen_at_location": 0.9072,
+    "test_envs": 27,
+    "test_hybrids": 556,
+    "test_rows": 11615,
+    "train_envs": 245,
+    "train_hybrids": 5021,
+    "train_rows": 146647,
+    "w_default": 0.5
+   },
+   "grid": {
+    "w=0": 0.4371,
+    "w=0.25": 0.4363,
+    "w=0.5": 0.4354,
+    "w=0.75": 0.4342,
+    "w=1": 0.4329
+   }
+  },
+  "2024": {
+   "fit": {
+    "cv_r": {
+     "10.0": 0.4188,
+     "100.0": 0.5177,
+     "1000.0": 0.554,
+     "10000.0": 0.5194,
+     "100000.0": 0.4053,
+     "1000000.0": 0.3046
+    },
+    "gca_lambda": 1.0,
+    "gca_parents": 2255,
+    "lambda": 1000.0,
+    "ridge_hybrids": 4938,
+    "share_rows_hybrid_genotyped": 1.0,
+    "share_rows_hybrid_seen": 0.1216,
+    "share_rows_hybrid_seen_at_location": 0.0968,
+    "test_envs": 23,
+    "test_hybrids": 1063,
+    "test_rows": 10057,
+    "train_envs": 272,
+    "train_hybrids": 5027,
+    "train_rows": 164921,
+    "w_default": 0.5
+   },
+   "grid": {
+    "w=0": 0.2802,
+    "w=0.25": 0.2928,
+    "w=0.5": 0.3018,
+    "w=0.75": 0.3033,
+    "w=1": 0.293
+   },
+   "grid_new": {
+    "w=0": 0.1006,
+    "w=0.25": 0.1085,
+    "w=0.5": 0.1198,
+    "w=0.75": 0.1313,
+    "w=1": 0.0941
+   },
+   "grid_seen": {
+    "w=0": 0.5938,
+    "w=0.25": 0.5937,
+    "w=0.5": 0.5936,
+    "w=0.75": 0.5934,
+    "w=1": 0.5932
+   }
+  }
+ },
+ "grading": {
+  "H1_adopt_tuned_weight": {
+   "held": false,
+   "value": {
+    "diff_2024": -0.009,
+    "w": 0.25
+   }
+  },
+  "P1_wstar_le_0.25": {
+   "held": true,
+   "value": 0.25
+  },
+  "P2_2024_tuned_not_above_default": {
+   "held": true,
+   "value": -0.009
+  },
+  "P3_2024_grid_increasing_to_default": {
+   "held": true,
+   "value": [
+    0.2802,
+    0.2928,
+    0.3018
+   ]
+  }
+ },
+ "markers_used": 2425,
+ "parentgca_version": "0.1.0",
+ "reproduces_baseline": true,
+ "select_years": [
+  "2022",
+  "2023"
+ ],
+ "version": "0.1.0",
+ "w_default": 0.5,
+ "w_grid": [
+  0.0,
+  0.25,
+  0.5,
+  0.75,
+  1.0
+ ]
+}
