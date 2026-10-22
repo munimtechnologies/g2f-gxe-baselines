@@ -1,0 +1,186 @@
+{
+ "bandwidths": [
+  "h0.25",
+  "h0.5",
+  "h1",
+  "h2",
+  "uniform"
+ ],
+ "baseline_version": "0.1.0",
+ "ec": {
+  "ec_columns": 654,
+  "ec_envs": 263,
+  "pcs": 10,
+  "variance_explained": 0.6247
+ },
+ "folds": {
+  "2022": {
+   "chosen": "uniform",
+   "chosen_minus_uniform": 0.0,
+   "chosen_score": 0.3257,
+   "inner_scores": {
+    "h0.25": {
+     "envs": 27,
+     "mean_r": 0.2565
+    },
+    "h0.5": {
+     "envs": 27,
+     "mean_r": 0.2839
+    },
+    "h1": {
+     "envs": 27,
+     "mean_r": 0.296
+    },
+    "h2": {
+     "envs": 27,
+     "mean_r": 0.3
+    },
+    "uniform": {
+     "envs": 27,
+     "mean_r": 0.3042
+    }
+   },
+   "inner_year": 2021,
+   "lambda": 1000.0,
+   "outer_scores": {
+    "h0.25": {
+     "envs": 28,
+     "mean_r": 0.3108
+    },
+    "h0.5": {
+     "envs": 28,
+     "mean_r": 0.322
+    },
+    "h1": {
+     "envs": 28,
+     "mean_r": 0.3256
+    },
+    "h2": {
+     "envs": 28,
+     "mean_r": 0.3263
+    },
+    "uniform": {
+     "envs": 28,
+     "mean_r": 0.3257
+    }
+   },
+   "share_test_envs_with_ec": 0.8929,
+   "share_train_envs_with_ec": 0.8756,
+   "train_envs": 217,
+   "uniform_score": 0.3257
+  },
+  "2023": {
+   "chosen": "h2",
+   "chosen_minus_uniform": 0.0016,
+   "chosen_score": 0.4387,
+   "inner_scores": {
+    "h0.25": {
+     "envs": 28,
+     "mean_r": 0.3108
+    },
+    "h0.5": {
+     "envs": 28,
+     "mean_r": 0.322
+    },
+    "h1": {
+     "envs": 28,
+     "mean_r": 0.3256
+    },
+    "h2": {
+     "envs": 28,
+     "mean_r": 0.3263
+    },
+    "uniform": {
+     "envs": 28,
+     "mean_r": 0.3257
+    }
+   },
+   "inner_year": 2022,
+   "lambda": 1000.0,
+   "outer_scores": {
+    "h0.25": {
+     "envs": 27,
+     "mean_r": 0.4263
+    },
+    "h0.5": {
+     "envs": 27,
+     "mean_r": 0.4373
+    },
+    "h1": {
+     "envs": 27,
+     "mean_r": 0.4392
+    },
+    "h2": {
+     "envs": 27,
+     "mean_r": 0.4387
+    },
+    "uniform": {
+     "envs": 27,
+     "mean_r": 0.4371
+    }
+   },
+   "share_test_envs_with_ec": 0.963,
+   "share_train_envs_with_ec": 0.8776,
+   "train_envs": 245,
+   "uniform_score": 0.4371
+  },
+  "2024": {
+   "chosen": "h1",
+   "chosen_minus_uniform": 0.0005,
+   "chosen_score": 0.2807,
+   "inner_scores": {
+    "h0.25": {
+     "envs": 27,
+     "mean_r": 0.4263
+    },
+    "h0.5": {
+     "envs": 27,
+     "mean_r": 0.4373
+    },
+    "h1": {
+     "envs": 27,
+     "mean_r": 0.4392
+    },
+    "h2": {
+     "envs": 27,
+     "mean_r": 0.4387
+    },
+    "uniform": {
+     "envs": 27,
+     "mean_r": 0.4371
+    }
+   },
+   "inner_year": 2023,
+   "lambda": 1000.0,
+   "outer_scores": {
+    "h0.25": {
+     "envs": 22,
+     "mean_r": 0.244
+    },
+    "h0.5": {
+     "envs": 22,
+     "mean_r": 0.2671
+    },
+    "h1": {
+     "envs": 22,
+     "mean_r": 0.2807
+    },
+    "h2": {
+     "envs": 22,
+     "mean_r": 0.2847
+    },
+    "uniform": {
+     "envs": 22,
+     "mean_r": 0.2802
+    }
+   },
+   "share_test_envs_with_ec": 0.9565,
+   "share_train_envs_with_ec": 0.886,
+   "train_envs": 272,
+   "uniform_score": 0.2802
+  }
+ },
+ "k_prior": 1.0,
+ "markers_used": 2425,
+ "version": "0.1.0"
+}
