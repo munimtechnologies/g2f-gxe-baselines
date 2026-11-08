@@ -9,6 +9,16 @@ the mean Pearson r inside each environment. This repository sets an honest floor
 simple genomic models. They are scored on 2022, 2023 and the organisers' released 2024 answers. Each
 genotype-by-environment (GxE) idea is tested on its own and pre-registered before its sealed run.
 
+## Where the entry model stands (read 2026-11-08)
+
+The 2024 leaderboard is public (EvalAI challenge 2376): 64 entries, won at **0.4501**. MV2's adopted
+model M4 scores **0.3018** in this repository's harness, which would have placed it **40th of 64**. Third
+place, at **0.4377**, is "Model 2022 (not competing)", a public reference script by one of the
+organisers that uses only markers: a Gaussian-kernel genomic model with global and state-specific
+marker effects, trained only on the states being predicted. **g2f-refmodel 0.1.0** (pre-registered)
+reruns that script unmodified to check that this harness reproduces the leaderboard, then takes the
+model apart on all three folds to find where its 0.136 lead over M4 comes from.
+
 ## Results so far
 
 | Study | Status | 2024 mean within-environment r |
@@ -21,6 +31,7 @@ genotype-by-environment (GxE) idea is tested on its own and pre-registered befor
 | g2f-parentloc 0.1.0 | graded: 3 of 5 predictions held, H1 failed; **not adopted** | parent-by-location offset (k=20) 0.286 (**-0.0156** below M4; helps 2022/2023 but not the 2024 hold-out) |
 | g2f-ecreaction 0.1.0 | graded: 2 of 5 predictions held, H1 failed; **not adopted** | marker-by-covariate reaction norm: real within-env signal (spread 54% of M4's) but every positive weight hurts, so alpha*=0 and M7=M4 (0.302) |
 | g2f-gcablend 0.1.0 | graded: all 3 predictions held, H1 failed; **keep a-priori 0.5** | tuning M4's blend weight on 2022+2023 picks w*=0.25, scoring 0.293 on 2024 (**-0.009** below the a-priori 0.5's 0.302); on 2024 the grid peaks at w=0.75 (0.3033) |
+| g2f-refmodel 0.1.0 | **pre-registered** (2026-11-08); sealed job queued | the organisers' public reference model (leaderboard 0.4377) rerun in this harness, plus ablations |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -41,9 +52,10 @@ itself: its marker-ridge/parent-GCA blend weight is fixed a priori at 0.5. Tunin
 training years (2022, 2023) picks w* = 0.25, which scores 0.293 on the 2024 answers -- 0.009 below the
 untuned 0.5 (0.302), itself within 0.0015 of the 2024 oracle weight (w = 0.75). The weight matters only
 for new hybrids (seen hybrids score 0.594 at every weight), and parent GCA's year-specific value makes
-the training years point it the wrong way, so the a-priori 0.5 is the safer forward choice. The entry
-therefore stays M4 at 0.5; the within-2024 tuning line is closed, and the next study waits for the 2026
-training release (opens 2026-11-16, a new data set). See the result files in [`docs/`](docs/).
+the training years point it the wrong way, so the a-priori 0.5 is the safer forward choice. Placed on
+the public 2024 leaderboard, though, M4 is a mid-table model, which is why the next study starts from the
+organisers' much stronger reference model instead of tuning M4 further. See the result files in
+[`docs/`](docs/).
 
 ## Files
 
@@ -71,6 +83,11 @@ training release (opens 2026-11-16, a new data set). See the result files in [`d
 - `docs/g2f-gcablend-0.1.0-prereg.md`, `docs/g2f-gcablend-0.1.0-result.md`, `g2f_gcablend.py`,
   `test_g2f_gcablend.py`: varies M4's blend weight over a grid, selects it on the mean of the 2022 and
   2023 folds, and tests whether the tuned weight beats the a-priori 0.5 on the 2024 answers.
+- `docs/g2f-refmodel-0.1.0-prereg.md`, `run_ref.R`, `g2f_refmodel.R`, `g2f_refmodel.py`,
+  `test_g2f_refmodel.py`: reruns the organisers' public reference script (downloaded at run time from
+  github.com/alenxav/Lectures, not copied here) and MV2's own re-implementation of its steps with
+  ablations, in R with bWGR (GPL-3, CRAN) and reshape2; the Python part scores and grades (numpy +
+  pandas).
 - `results/`: outputs of the sealed runs that each result grades (`g2f_baseline.json`,
   `g2f_envkernel.json`, `g2f_checkhybrid.json`, `g2f_parentgca.json`, `g2f_newshrink.json`,
   `g2f_parentloc.json`, `g2f_ecreaction.json`, `g2f_gcablend.json`, per-environment r and per-row
@@ -78,7 +95,7 @@ training release (opens 2026-11-16, a new data set). See the result files in [`d
 
 ```
 pip install numpy pandas
-python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend
+python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel
 python g2f_baseline.py --data-dir data --out-dir results
 python g2f_envkernel.py --data-dir data --out-dir results
 python g2f_checkhybrid.py --out-dir results
@@ -87,11 +104,16 @@ python g2f_newshrink.py --data-dir data --out-dir results
 python g2f_parentloc.py --data-dir data --out-dir results
 python g2f_ecreaction.py --data-dir data --out-dir results
 python g2f_gcablend.py --data-dir data --out-dir results
+# g2f-refmodel (R with bWGR and reshape2; the data folder must already hold the release files)
+Rscript run_ref.R script_model.R data results
+Rscript g2f_refmodel.R data results
+python g2f_refmodel.py --data-dir data --out-dir results --ref-script script_model.R
 ```
 
 Data: Genomes to Fields 2024 Maize Genotype by Environment Prediction Competition release, CyVerse
 Data Commons, DOI 10.25739/78mn-4394 (Open Data Commons PDDL). Data papers: Lima et al. 2023,
 BMC Research Notes (doi 10.1186/s13104-023-06421-z) and the 2024 competition note
-(doi 10.1186/s13104-026-07629-5). This repository is not affiliated with G2F.
+(doi 10.1186/s13104-026-07629-5). The 2024 leaderboard figures are from EvalAI's public API (challenge
+2376, phase split 5893). This repository is not affiliated with G2F.
 
 Licence: code Apache-2.0; text and results CC BY 4.0. Contact: MV2, Munim, Inc., mv2@munimtech.com.
