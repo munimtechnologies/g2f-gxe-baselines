@@ -1,0 +1,180 @@
+{
+ "decision": {
+  "choose_on": "the 2024-like fold (mostly hybrids never tested before)",
+  "setting": "new_hybrids",
+  "share_in_last_year": 0.0684,
+  "threshold": 0.7
+ },
+ "expect": {
+  "D1_roles_found": {
+   "held": true,
+   "value": [
+    "geno_numeric",
+    "observed",
+    "template",
+    "trait"
+   ]
+  },
+  "D2_every_template_row_predicted": {
+   "held": true,
+   "value": 0
+  },
+  "D3_submission_validates": {
+   "held": true,
+   "value": {
+    "errors": 0,
+    "rows": 10057
+   }
+  },
+  "D4_score_reproduces_published": {
+   "held": true,
+   "value": {
+    "envs": 22,
+    "mean_r": 0.3018
+   }
+  },
+  "D5_all_faults_rejected": {
+   "held": true,
+   "value": {
+    "blank_value": true,
+    "drop_last_row": true,
+    "nan_value": true,
+    "rename_yield_column": true,
+    "swap_rows": true
+   }
+  },
+  "D6_seen_share_and_decision": {
+   "held": true,
+   "value": {
+    "setting": "new_hybrids",
+    "share_in_last_year": 0.0684,
+    "share_seen": 0.1216
+   }
+  }
+ },
+ "expect_held": 6,
+ "expect_total": 6,
+ "faults": {
+  "blank_value": {
+   "errors": [
+    "1 yield cells are not finite numbers; first at line 7: ''"
+   ],
+   "rejected": true
+  },
+  "drop_last_row": {
+   "errors": [
+    "10056 data rows, the template has 10057"
+   ],
+   "rejected": true
+  },
+  "nan_value": {
+   "errors": [
+    "1 yield cells are not finite numbers; first at line 9: 'nan'"
+   ],
+   "rejected": true
+  },
+  "rename_yield_column": {
+   "errors": [
+    "header is ['Env', 'Hybrid', 'Yield'], expected ['Env', 'Hybrid', 'Yield_Mg_ha']",
+    "no Yield_Mg_ha column"
+   ],
+   "rejected": true
+  },
+  "swap_rows": {
+   "errors": [
+    "2 rows differ from the template's Env/Hybrid order; first at line 2: DEH1_2024 / 01DIB2/LH287, template has DEH1_2024 / 01CSI6/LH287"
+   ],
+   "rejected": true
+  }
+ },
+ "predictions": {
+  "column": "M4",
+  "pairs": 10057,
+  "source": "https://raw.githubusercontent.com/munimtechnologies/g2f-gxe-baselines/main/results/g2f_parentgca_2024_predictions.csv"
+ },
+ "release": {
+  "geno_numeric": "5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+  "observed": "7_Testing_Observed_Values.csv",
+  "template": "1_Submission_Template_2024.csv",
+  "trait": "1_Training_Trait_Data_2014_2023.csv"
+ },
+ "release_name_years": {
+  "geno_numeric": [
+   2014,
+   2025
+  ],
+  "observed": [],
+  "template": [
+   2024
+  ],
+  "trait": [
+   2014,
+   2023
+  ]
+ },
+ "score": {
+  "env_r": {
+   "DEH1_2024": 0.1837,
+   "GAH1_2024": 0.1832,
+   "GAH2_2024": 0.2865,
+   "IAH2_2024": 0.1641,
+   "IAH4_2024": 0.364,
+   "ILH1_2024": 0.3422,
+   "INH1_2024": 0.4194,
+   "MIH1_2024": 0.3776,
+   "MNH1_2024": 0.4612,
+   "MOH1_2024": 0.3096,
+   "NCH1_2024": 0.2512,
+   "NEH1_2024": 0.3779,
+   "NEH2_2024": 0.2234,
+   "NEH3_2024": 0.417,
+   "NYH2_2024": 0.3453,
+   "NYH3_2024": 0.1534,
+   "OHH1_2024": 0.451,
+   "ONH3_2024": 0.2836,
+   "TXH1_2024": 0.1894,
+   "WIH1_2024": 0.3699,
+   "WIH2_2024": 0.2495,
+   "WIH3_2024": 0.2376
+  },
+  "envs": 22,
+  "mean_r": 0.3018,
+  "pairs_scored": 9486
+ },
+ "seen": {
+  "last_training_year": 2023,
+  "pairs_hybrid_in_last_year": 688,
+  "pairs_hybrid_seen": 1223,
+  "share_in_last_year": 0.0684,
+  "share_seen": 0.1216,
+  "template_pairs": 10057,
+  "training_years": [
+   2014,
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023
+  ]
+ },
+ "validate": {
+  "envs": 23,
+  "errors": [],
+  "ok": true,
+  "rows": 10057,
+  "template_rows": 10057,
+  "warnings": [
+   "predictions run from -2.008 to 0.832, outside 0-30 Mg/ha; within-environment r ignores scale, but check whether the rules ask for yields in Mg/ha"
+  ]
+ },
+ "version": "0.1.0",
+ "write": {
+  "filled_by_env_mean": 0,
+  "missing_predictions": 0,
+  "rows": 10057
+ }
+}

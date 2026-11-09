@@ -1,5 +1,5 @@
 # Apache-2.0. Made by MV2 of Munim, Inc. with AI agents.
-"""g2f_entry 0.1.0: build, check and score a Genomes to Fields GxE competition submission file.
+"""g2f_entry 0.2.0: build, check and score a Genomes to Fields GxE competition submission file.
 
 Release-day helper for the G2F maize GxE prediction competition (standard library only):
   locate    find the trait, template, observed and genotype files in a release folder by name
@@ -7,14 +7,20 @@ Release-day helper for the G2F maize GxE prediction competition (standard librar
             year and in the last training year, and the model-choice rule pre-registered in
             docs/g2f-release-census-0.1.0.md (R3: >= 70% in the last year = repeated hybrids)
   write     fill the submission template, row for row and in its own order, from a predictions CSV
+  mgha      (new in 0.2.0) like write, but first turn scale-free predictions into absolute yields
+            in Mg/ha, environment by environment, with a positive affine map, so the
+            within-environment Pearson r (the ranking metric) is unchanged
   validate  check a submission against its template: same header, same rows in the same order,
             every yield a finite number; warn on environments with one constant prediction
   score     mean within-environment Pearson r against an observed-values file (environments with
             at least 3 observed rows; a constant prediction scores 0), as in g2f_baseline.py
   dryrun    all of the above on a past release, plus five deliberately broken copies of the
             submission that validate must reject
+  dryrun-mgha  (new in 0.2.0) the mgha step on a past release: checks E1-E5 of
+            docs/g2f-entry-0.2.0.md
 Within-environment r ignores each environment's mean and scale, so only the ranking of hybrids
-inside an environment matters.
+inside an environment matters for the score. The 2024 rules still ask for "absolute grain yield
+... in Mg/ha", which is what mgha provides.
 """
 import argparse
 import csv
@@ -25,10 +31,15 @@ import re
 import sys
 import urllib.request
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 YIELD_COL = "Yield_Mg_ha"
 MIN_ROWS = 3
 REPEAT_THRESHOLD = 0.70
+# mgha defaults, fixed in docs/g2f-entry-0.2.0.md before the dry run.
+SHRINK = 0.30          # hybrid spread = SHRINK x median within-environment SD of training hybrid means
+RECENT_YEARS = 3       # fallback level and spread come from the last 3 training seasons
+MIN_HYBRIDS = 10       # environments with fewer hybrids do not inform the spread
+LO, HI = 0.5, 25.0     # every Mg/ha value is kept inside this band (spread shrinks per env if needed)
 # (role, substrings of the lower-case file name); the first match wins (as g2f_release_census.py).
 ROLES = (
     ("observed", ("observed_values",)),
@@ -56,6 +67,12 @@ def role_of(name):
 def env_year(env):
     tail = str(env).strip().rsplit("_", 1)[-1]
     return int(tail) if len(tail) == 4 and tail.isdigit() else None
+
+
+def env_location(env):
+    """Env name without its trailing _YYYY (IAH4_2024 -> IAH4); the name itself if it has none."""
+    e = str(env).strip()
+    return e.rsplit("_", 1)[0] if env_year(e) is not None and "_" in e else e
 
 
 def is_number(text):
@@ -116,6 +133,28 @@ def value_index(header, col=None):
 
 def cell(row, i):
     return row[i] if i is not None and i < len(row) else ""
+
+
+def mean(xs):
+    xs = list(xs)
+    return sum(xs) / len(xs) if xs else None
+
+
+def median(xs):
+    xs = sorted(xs)
+    n = len(xs)
+    if not n:
+        return None
+    return xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2
+
+
+def sample_sd(xs):
+    xs = list(xs)
+    n = len(xs)
+    if n < 2:
+        return 0.0
+    m = sum(xs) / n
+    return math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
 
 
 def read_values(path, col=None, dup="error"):
@@ -239,6 +278,8 @@ def validate_submission(template_path, sub_path):
                         "ignores scale, but check whether the rules ask for yields in Mg/ha"
                         % (min(vals), max(vals)))
     res.update({"ok": not errors, "errors": errors, "warnings": warnings, "envs": len(per_env)})
+    if vals:
+        res["range"] = [round(min(vals), 4), round(max(vals), 4)]
     return res
 
 
@@ -253,25 +294,48 @@ def pearson(xs, ys):
     return sxy / math.sqrt(sxx * syy)
 
 
+def env_pearson(preds, obs):
+    """{env: unrounded r} over pairs in both dicts, with the score's skip rules."""
+    by_env = {}
+    for (e, h), p in sorted(preds.items()):
+        if (e, h) in obs:
+            by_env.setdefault(e, []).append((p, obs[(e, h)]))
+    out = {}
+    for e, pairs in sorted(by_env.items()):
+        ps, os_ = [a for a, _ in pairs], [b for _, b in pairs]
+        if len(pairs) < MIN_ROWS or max(os_) == min(os_):
+            continue
+        out[e] = 0.0 if max(ps) == min(ps) else pearson(ps, os_)
+    return out
+
+
 def score_submission(sub_path, observed_path, col=YIELD_COL):
     """Mean within-environment Pearson r of a submission against observed values (averaged per pair).
     Environments with fewer than MIN_ROWS observed rows or constant observations are skipped; a
     constant prediction scores 0."""
     preds = read_values(sub_path, col, dup="error")
     obs = read_values(observed_path, None, dup="mean")
-    by_env = {}
-    for (e, h), p in sorted(preds.items()):
-        if (e, h) in obs:
-            by_env.setdefault(e, []).append((p, obs[(e, h)]))
-    env_r = {}
-    for e, pairs in sorted(by_env.items()):
-        ps, os_ = [a for a, _ in pairs], [b for _, b in pairs]
-        if len(pairs) < MIN_ROWS or max(os_) == min(os_):
-            continue
-        env_r[e] = 0.0 if max(ps) == min(ps) else pearson(ps, os_)
-    mean = round(sum(env_r.values()) / len(env_r), 4) if env_r else None
-    return {"mean_r": mean, "envs": len(env_r), "pairs_scored": sum(len(v) for v in by_env.values()),
+    env_r = env_pearson(preds, obs)
+    pairs = sum(1 for k in preds if k in obs)
+    mean_r = round(sum(env_r.values()) / len(env_r), 4) if env_r else None
+    return {"mean_r": mean_r, "envs": len(env_r), "pairs_scored": pairs,
             "env_r": {e: round(r, 4) for e, r in env_r.items()}}
+
+
+def rmse(preds, obs):
+    """{"rmse", "pairs"} over pairs present in both dicts (rmse None if none)."""
+    d = [(preds[k] - obs[k]) ** 2 for k in preds if k in obs]
+    return {"rmse": round(math.sqrt(sum(d) / len(d)), 4) if d else None, "pairs": len(d)}
+
+
+def env_rmse_mean(preds, obs):
+    """The 2022 competition's metric: RMSE inside each environment, averaged over environments."""
+    by_env = {}
+    for k, p in preds.items():
+        if k in obs:
+            by_env.setdefault(k[0], []).append((p - obs[k]) ** 2)
+    per = [math.sqrt(sum(d) / len(d)) for d in by_env.values()]
+    return {"mean_rmse": round(sum(per) / len(per), 4) if per else None, "envs": len(per)}
 
 
 def row_year(ycell, env):
@@ -280,9 +344,8 @@ def row_year(ycell, env):
     return env_year(env)
 
 
-def trait_hybrid_years(trait_path):
-    """{hybrid: set of years with a numeric yield row}, read row by row."""
-    out = {}
+def _trait_rows(trait_path):
+    """Yields (env, hybrid, year, yield) for every training row with a numeric yield."""
     with open(trait_path, encoding="utf-8-sig", errors="replace", newline="") as fh:
         reader = csv.reader(fh)
         header = [h.strip() for h in next(reader, [])]
@@ -292,13 +355,96 @@ def trait_hybrid_years(trait_path):
             raise ValueError("no %s column in %s" % (YIELD_COL, trait_path))
         iv = header.index(YIELD_COL)
         for r in reader:
-            if not is_number(cell(r, iv).strip()):
+            v = cell(r, iv).strip()
+            if not is_number(v):
                 continue
             e, h = cell(r, ie).strip(), cell(r, ih).strip()
-            y = row_year(cell(r, iy).strip(), e)
-            if h and y is not None:
-                out.setdefault(h, set()).add(y)
+            yield e, h, row_year(cell(r, iy).strip(), e), float(v)
+
+
+def trait_hybrid_years(trait_path):
+    """{hybrid: set of years with a numeric yield row}, read row by row."""
+    out = {}
+    for _e, h, y, _v in _trait_rows(trait_path):
+        if h and y is not None:
+            out.setdefault(h, set()).add(y)
     return out
+
+
+def training_env_stats(trait_path):
+    """{env: {"year", "mean", "sd", "hybrids"}}: mean and sample SD of the per-hybrid mean yields of
+    each training environment (plots of one hybrid are averaged first)."""
+    acc, year = {}, {}
+    for e, h, y, v in _trait_rows(trait_path):
+        if not e or not h:
+            continue
+        acc.setdefault(e, {}).setdefault(h, []).append(v)
+        if e not in year and y is not None:
+            year[e] = y
+    out = {}
+    for e, hy in sorted(acc.items()):
+        means = [sum(vs) / len(vs) for vs in hy.values()]
+        out[e] = {"year": year.get(e, env_year(e)), "mean": sum(means) / len(means),
+                  "sd": sample_sd(means), "hybrids": len(means)}
+    return out
+
+
+def scale_plan(stats, template_envs, shrink=SHRINK, recent=RECENT_YEARS, min_hybrids=MIN_HYBRIDS):
+    """Level (Mg/ha) for each template environment and one hybrid spread, from training data only.
+    level = mean of the training environment means at the same location (any year), else the mean
+    of the environment means of the last `recent` training seasons; spread = shrink x the median
+    SD of hybrid means over the recent environments with at least min_hybrids hybrids."""
+    years = sorted({s["year"] for s in stats.values() if s["year"] is not None})
+    if not years:
+        raise ValueError("no training environment has a year")
+    recent_years = years[-recent:]
+    rec = [s for s in stats.values() if s["year"] in recent_years]
+    fallback = mean(s["mean"] for s in rec)
+    sds = [s["sd"] for s in rec if s["hybrids"] >= min_hybrids]
+    if not sds:
+        raise ValueError("no recent training environment has %d or more hybrids" % min_hybrids)
+    by_loc = {}
+    for e, s in stats.items():
+        by_loc.setdefault(env_location(e), []).append(s["mean"])
+    envs = {}
+    for e in sorted(set(template_envs)):
+        ms = by_loc.get(env_location(e))
+        envs[e] = {"level": mean(ms) if ms else fallback,
+                   "source": "location" if ms else "recent_mean", "seasons": len(ms or [])}
+    return {"shrink": shrink, "median_sd": median(sds), "spread": shrink * median(sds),
+            "fallback": fallback, "recent_years": recent_years, "sd_envs": len(sds), "envs": envs}
+
+
+def rescale(preds, plan, lo=LO, hi=HI):
+    """Mg/ha predictions: level_e + s_e * z, where z standardises the predictions inside each
+    environment and s_e = plan spread, shrunk for an environment only if a value would leave
+    [lo, hi]. A positive affine map per environment, so within-environment r is unchanged."""
+    by_env = {}
+    for (e, h), v in preds.items():
+        by_env.setdefault(e, []).append(((e, h), float(v)))
+    out, shrunk, levels = {}, [], {}
+    for e, items in sorted(by_env.items()):
+        info = plan["envs"].get(e)
+        level = info["level"] if info else plan["fallback"]
+        levels[e] = level
+        room = min(level - lo, hi - level)
+        if room <= 0:
+            raise ValueError("level %.3f for %s is outside %.1f-%.1f Mg/ha" % (level, e, lo, hi))
+        vals = [v for _, v in items]
+        m, sd = sum(vals) / len(vals), sample_sd(vals)
+        if sd == 0:
+            for k, _ in items:
+                out[k] = level
+            continue
+        s = plan["spread"]
+        zmax = max(abs(v - m) / sd for v in vals)
+        if s * zmax > room:
+            s = room / zmax
+            shrunk.append(e)
+        for k, v in items:
+            out[k] = level + s * (v - m) / sd
+    return out, {"envs": len(by_env), "spread_shrunk_envs": shrunk,
+                 "envs_without_plan": sorted(e for e in by_env if e not in plan["envs"])}
 
 
 def seen_share(trait_path, template_path):
@@ -376,6 +522,20 @@ def fetch(source, work_dir):
     return source
 
 
+def template_envs(template_path):
+    header, rows = read_csv(template_path)
+    ie, _ih = key_index(header)
+    return sorted({cell(r, ie) for r in rows})
+
+
+def mgha_predictions(trait_path, template_path, preds, shrink=SHRINK, min_hybrids=MIN_HYBRIDS):
+    """(Mg/ha predictions, plan, rescale info) for predictions on any scale."""
+    plan = scale_plan(training_env_stats(trait_path), template_envs(template_path), shrink=shrink,
+                      min_hybrids=min_hybrids)
+    mg, info = rescale(preds, plan)
+    return mg, plan, info
+
+
 def dryrun(data_dir, out_dir, pred_source, col, expect=None):
     """Locate, write, validate, score, fault-check and decide on a past release; grade expect."""
     os.makedirs(out_dir, exist_ok=True)
@@ -432,6 +592,87 @@ def grade_dryrun(res, expect):
     return g
 
 
+def dryrun_mgha(data_dir, out_dir, pred_source, col, expect=None, shrink=SHRINK,
+                min_hybrids=MIN_HYBRIDS):
+    """The mgha step on a past release with public answers: checks E1-E5 of docs/g2f-entry-0.2.0.md."""
+    os.makedirs(out_dir, exist_ok=True)
+    rel = find_release(data_dir)
+    for role in ("trait", "template", "observed"):
+        if role not in rel:
+            raise ValueError("no %s file under %s" % (role, data_dir))
+    res = {"version": VERSION, "study": "g2f-entry-0.2.0-mgha",
+           "release": {r: os.path.basename(rel[r]) for r in ("trait", "template", "observed")},
+           "predictions": {"source": pred_source, "column": col}}
+    preds = read_values(fetch(pred_source, out_dir), col, dup="error")
+    res["predictions"]["pairs"] = len(preds)
+    raw_sub = os.path.join(out_dir, "submission_raw.csv")
+    write_submission(rel["template"], preds, raw_sub)
+    res["score_raw"] = score_submission(raw_sub, rel["observed"])
+    mg, plan, info = mgha_predictions(rel["trait"], rel["template"], preds, shrink, min_hybrids)
+    sub = os.path.join(out_dir, "submission_mgha.csv")
+    res["write"] = write_submission(rel["template"], mg, sub)
+    res["validate"] = validate_submission(rel["template"], sub)
+    res["score_mgha"] = score_submission(sub, rel["observed"])
+    obs = read_values(rel["observed"], None, dup="mean")
+    raw_r = env_pearson(read_values(raw_sub), obs)
+    mg_r = env_pearson(read_values(sub), obs)
+    diffs = [abs(raw_r[e] - mg_r.get(e, float("inf"))) for e in raw_r]
+    res["env_r_max_abs_diff"] = max(diffs) if diffs else None
+    res["env_r_sets_equal"] = sorted(raw_r) == sorted(mg_r)
+    level = {k: plan["envs"].get(k[0], {"level": plan["fallback"]})["level"] for k in mg}
+    const = {k: plan["fallback"] for k in mg}
+    mg_file = read_values(sub)
+    res["rmse"] = {"mgha": rmse(mg_file, obs), "level_only": rmse(level, obs),
+                   "recent_mean": rmse(const, obs)}
+    res["env_rmse_mean_2022_metric"] = {"mgha": env_rmse_mean(mg_file, obs),
+                                        "level_only": env_rmse_mean(level, obs),
+                                        "recent_mean": env_rmse_mean(const, obs)}
+    obs_env = {}
+    for (e, _h), v in obs.items():
+        obs_env.setdefault(e, []).append(v)
+    lvl_err = {e: round(plan["envs"][e]["level"] - mean(vs), 4)
+               for e, vs in sorted(obs_env.items()) if e in plan["envs"]}
+    res["level_error_by_env"] = lvl_err
+    res["level_mean_abs_error"] = round(mean(abs(x) for x in lvl_err.values()), 4) if lvl_err else None
+    res["observed_within_env_sd_median"] = round(median(sample_sd(vs) for vs in obs_env.values()), 4)
+    res["plan"] = {k: (round(v, 4) if isinstance(v, float) else v) for k, v in plan.items() if k != "envs"}
+    res["plan"]["envs_from_location"] = sum(1 for v in plan["envs"].values() if v["source"] == "location")
+    res["plan"]["envs_total"] = len(plan["envs"])
+    res["plan"]["levels"] = {e: round(v["level"], 4) for e, v in plan["envs"].items()}
+    res["rescale"] = info
+    if expect:
+        res["expect"] = grade_mgha(res, expect)
+        res["expect_held"] = sum(1 for v in res["expect"].values() if v["held"])
+        res["expect_total"] = len(res["expect"])
+    return res
+
+
+def grade_mgha(res, expect):
+    """Checks E1-E5 of docs/g2f-entry-0.2.0.md."""
+    g = {}
+    v = res["validate"]
+    g["E1_mgha_validates_without_warnings"] = {
+        "value": {"errors": len(v["errors"]), "warnings": len(v["warnings"]), "range": v.get("range")},
+        "held": bool(v["ok"]) and not v["warnings"]}
+    sr, sm = res["score_raw"], res["score_mgha"]
+    tol = expect.get("score_tol", 0.0001)
+    ok2 = (sr["mean_r"] is not None and sm["mean_r"] is not None
+           and abs(sr["mean_r"] - expect["score"]) <= tol and abs(sm["mean_r"] - sr["mean_r"]) <= tol
+           and sr["envs"] == sm["envs"] == expect["envs"])
+    g["E2_score_unchanged"] = {"value": {"raw": sr["mean_r"], "mgha": sm["mean_r"], "envs": sm["envs"]},
+                               "held": ok2}
+    d = res["env_r_max_abs_diff"]
+    g["E3_every_env_r_unchanged"] = {"value": d, "held": d is not None and res["env_r_sets_equal"]
+                                     and d <= expect.get("r_tol", 0.0001)}
+    r = res["rmse"]
+    g["E4_rmse_below_level_only"] = {"value": {"mgha": r["mgha"]["rmse"], "level_only": r["level_only"]["rmse"]},
+                                     "held": r["mgha"]["rmse"] < r["level_only"]["rmse"]}
+    g["E5_location_level_beats_recent_mean"] = {
+        "value": {"level_only": r["level_only"]["rmse"], "recent_mean": r["recent_mean"]["rmse"]},
+        "held": r["level_only"]["rmse"] < r["recent_mean"]["rmse"]}
+    return g
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -446,19 +687,27 @@ def main(argv=None):
     p.add_argument("--col", default=None, help="value column (default Yield_Mg_ha or the first other)")
     p.add_argument("--out", required=True)
     p.add_argument("--fill", choices=("env_mean",), default=None)
+    p = sub.add_parser("mgha")
+    p.add_argument("--trait", required=True)
+    p.add_argument("--template", required=True)
+    p.add_argument("--pred", required=True, help="CSV (or URL) with Env, Hybrid and a value column")
+    p.add_argument("--col", default=None)
+    p.add_argument("--out", required=True)
+    p.add_argument("--shrink", type=float, default=SHRINK)
     p = sub.add_parser("validate")
     p.add_argument("--template", required=True)
     p.add_argument("--sub", required=True)
     p = sub.add_parser("score")
     p.add_argument("--sub", required=True)
     p.add_argument("--observed", required=True)
-    p = sub.add_parser("dryrun")
-    p.add_argument("--data-dir", default="/data")
-    p.add_argument("--out-dir", default="/out")
-    p.add_argument("--pred", required=True)
-    p.add_argument("--col", required=True)
-    p.add_argument("--expect", default="", help="JSON with the stated dry-run figures")
-    p.add_argument("--name", default="g2f_entry_dryrun")
+    for name in ("dryrun", "dryrun-mgha"):
+        p = sub.add_parser(name)
+        p.add_argument("--data-dir", default="/data")
+        p.add_argument("--out-dir", default="/out")
+        p.add_argument("--pred", required=True)
+        p.add_argument("--col", required=True)
+        p.add_argument("--expect", default="", help="JSON with the stated dry-run figures")
+        p.add_argument("--name", default="g2f_entry_" + name.replace("-", "_"))
     a = ap.parse_args(argv)
 
     if a.cmd == "locate":
@@ -471,6 +720,14 @@ def main(argv=None):
         work = os.path.dirname(os.path.abspath(a.out))
         out = write_submission(a.template, read_values(fetch(a.pred, work), a.col), a.out, a.fill)
         out["validate"] = validate_submission(a.template, a.out)
+    elif a.cmd == "mgha":
+        work = os.path.dirname(os.path.abspath(a.out))
+        preds = read_values(fetch(a.pred, work), a.col)
+        mg, plan, info = mgha_predictions(a.trait, a.template, preds, a.shrink)
+        out = write_submission(a.template, mg, a.out)
+        out["validate"] = validate_submission(a.template, a.out)
+        out["rescale"] = info
+        out["plan"] = {k: v for k, v in plan.items() if k != "envs"}
     elif a.cmd == "validate":
         out = validate_submission(a.template, a.sub)
     elif a.cmd == "score":
@@ -480,11 +737,12 @@ def main(argv=None):
         if a.expect:
             with open(a.expect, encoding="utf-8") as fh:
                 expect = json.load(fh)
-        out = dryrun(a.data_dir, a.out_dir, a.pred, a.col, expect)
+        run = dryrun if a.cmd == "dryrun" else dryrun_mgha
+        out = run(a.data_dir, a.out_dir, a.pred, a.col, expect)
         with open(os.path.join(a.out_dir, a.name + ".json"), "w", encoding="utf-8") as fh:
             json.dump(out, fh, indent=1, sort_keys=True)
     print(json.dumps(out, indent=1, sort_keys=True))
-    if a.cmd == "validate" and not out["ok"]:
+    if a.cmd in ("validate", "write", "mgha") and not out.get("ok", out.get("validate", {}).get("ok", True)):
         return 1
     return 0
 
