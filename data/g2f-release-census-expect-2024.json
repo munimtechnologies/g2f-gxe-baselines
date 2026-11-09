@@ -1,0 +1,21 @@
+{
+ "about": "g2f-release-census 0.1.0 dry run on the G2F 2024 competition release (CyVerse DOI 10.25739/78mn-4394). N1-N6: figures stated in the data note (Chen et al. 2026, BMC Research Notes 19:113, PMC12983533). C1-C10: counts MV2's own g2f-baseline-v1 job (pandas, 2026-10-21) already printed for the same files; they test this tool, not the data.",
+ "checks": {
+  "trait_hybrids": {"eq": 5205, "source": "N1 data note: '5,205 hybrids evaluated across 272 environments'"},
+  "trait_envs": {"eq": 272, "source": "N2 data note: '272 environments'"},
+  "trait_rows": {"min": 170000, "max": 190000, "source": "N3 data note: 'approximately 180,000 maize field plots'"},
+  "geno_markers": {"eq": 2425, "source": "N4 data note: '2,425 SNP markers'"},
+  "template_hybrids": {"eq": 1063, "source": "N5 data note: '1,063 maize hybrids'"},
+  "template_envs": {"eq": 23, "source": "N6 data note: '23 test locations'"},
+  "trait_envs_with_numeric_yield": {"eq": 272, "source": "C1 g2f-baseline-v1 train_envs (2024 fold)"},
+  "trait_hybrids_with_numeric_yield": {"min": 5017, "max": 5037, "source": "C2 g2f-baseline-v1 train_hybrids 5027"},
+  "template_pairs": {"eq": 10057, "source": "C3 g2f-baseline-v1 test_rows"},
+  "template_pairs_hybrid_seen": {"min": 1218, "max": 1228, "source": "C4 g2f-baseline-v1 share_rows_hybrid_seen 0.1216"},
+  "template_pairs_hybrid_seen_at_location": {"min": 969, "max": 979, "source": "C5 g2f-baseline-v1 share_rows_hybrid_seen_at_location 0.0968"},
+  "template_pairs_genotyped": {"eq": 10057, "source": "C6 g2f-baseline-v1 share_rows_hybrid_genotyped 1.0"},
+  "template_pairs_with_observation": {"eq": 9486, "source": "C7 g2f-baseline-v1 template_rows_with_observation"},
+  "geno_taxa": {"eq": 5897, "source": "C8 g2f-baseline-v1 genotyped_hybrids"},
+  "observed_envs_with_3plus": {"eq": 22, "source": "C9 g2f-baseline-v1 scored 22 environments in 2024"},
+  "trait_rows_with_numeric_yield": {"eq": 164921, "source": "C10 g2f-baseline-v1 trait_rows"}
+ }
+}
