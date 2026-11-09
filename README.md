@@ -25,6 +25,14 @@ marker effects. The organisers' script itself did not run (our wrapper put its i
 folder), so **g2f-refmodel 0.1.1** (pre-registered) reruns it and splits both models by kind of new
 hybrid, to find out where each one wins before the 2026 entry is chosen.
 
+**The 2026 test season starts a new hybrid set (g2f-release-census 0.1.0, graded).** G2F grows each set
+of hybrids for two seasons. In odd seasons since 2017, 79-99% of hybrids were grown the year before. In
+even seasons since 2016, only 2-16% were. The 2026 competition predicts the 2026 trials, an even year.
+G2F describes them as about 300 new paired crosses between 50 Stiff Stalk and 100 Non-Stiff Stalk
+lines, plus topcrosses and 25 checks. In 2024 every new test hybrid had at least one parent seen before.
+If the 2026 lines are new, many test hybrids will have neither parent seen, a kind of row that the 2024
+season never tested. **g2f-cathistory 0.1.0** (pre-registered) counts this for every season since 2015.
+
 ## Results so far
 
 | Study | Status | 2024 mean within-environment r |
@@ -39,12 +47,13 @@ hybrid, to find out where each one wins before the 2026 entry is chosen.
 | g2f-gcablend 0.1.0 | graded: all 3 predictions held, H1 failed; **keep a-priori 0.5** | tuning M4's blend weight on 2022+2023 picks w*=0.25, scoring 0.293 on 2024 (**-0.009** below the a-priori 0.5's 0.302); on 2024 the grid peaks at w=0.75 (0.3033) |
 | g2f-refmodel 0.1.0 | graded: G1/G2 not run (reference did not start); P1, P5, P6 held, P3 held but uninformative, P2, P4 failed; H1 failed, **M4 kept for now** | **re-implemented reference 0.4416 (3rd of 64)**; new hybrids 0.377; but 2022 0.299 and 2023 0.389, below M4 |
 | g2f-refmodel 0.1.1 | **pre-registered** (2026-11-09); sealed jobs queued | the reference script rerun with the right folder layout (G1, G2), and both models split by how many parents of each new hybrid were seen before |
+| g2f-cathistory 0.1.0 | **pre-registered** (2026-11-09); sealed job queued | per-season counts of seen / new_both / new_one / new_none test pairs, 2015-2024, a parent-line table for the 2026 template, and corrected predictions for the 2026 release |
 
 Tools for the 2026 season (training data released 2026-11-16):
 
 | Tool | Status | What it does |
 |---|---|---|
-| g2f-release-census 0.1.0 | published; check job on the 2024 release queued | names, counts and shapes of a release's files, checked against registered expectations, before any modelling |
+| g2f-release-census 0.1.0 | **checked on the 2024 release**: 9 of 10 tool checks held (C8 was a definition: it counts all 5,899 genotype rows, not the 5,897 left after the baseline's filter), all 6 data-note counts and both predictions held | names, counts and shapes of a release's files, checked against registered expectations, before any modelling |
 | g2f-entry 0.1.0 | published; dry run on 2024 queued | locates the template, measures the share of test rows whose hybrid was grown before (`seen`), writes and validates an upload file, and scores a dry run |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
@@ -96,18 +105,21 @@ See the result files in [`docs/`](docs/).
   part scores and grades (numpy + pandas). `run_ref.R` 0.1.1 fixes the input folder layout.
 - `docs/g2f-refmodel-0.1.1-prereg.md`, `g2f_refcheck.py`, `test_g2f_refcheck.py`: scores the reference
   script's own predictions (`r0`) and splits the re-implementation by hybrid category (`split`).
-- `docs/g2f-release-census-0.1.0.md`, `g2f_release_census.py`, `test_g2f_release_census.py`,
-  `data/g2f-release-census-expect-2024.json`: release census (standard library only).
+- `docs/g2f-release-census-0.1.0.md`, `docs/g2f-release-census-0.1.0-result.md`,
+  `g2f_release_census.py`, `test_g2f_release_census.py`, `data/g2f-release-census-expect-2024.json`:
+  release census (standard library only) and its dry run on the 2024 release.
+- `docs/g2f-cathistory-0.1.0-prereg.md`, `g2f_cathistory.py`, `test_g2f_cathistory.py`: per-season
+  hybrid categories, the parent-line table and the 2026 checks' history (standard library only).
 - `docs/g2f-entry-0.1.0.md`, `g2f_entry.py`, `test_g2f_entry.py`, `data/g2f-entry-expect-2024.json`:
   entry tool (standard library only).
 - `results/`: outputs of the sealed runs that each result grades (`g2f_baseline.json`,
   `g2f_envkernel.json`, `g2f_checkhybrid.json`, `g2f_parentgca.json`, `g2f_newshrink.json`,
-  `g2f_parentloc.json`, `g2f_ecreaction.json`, `g2f_gcablend.json`, `g2f_refmodel.json`, per-environment
-  r and per-row prediction tables).
+  `g2f_parentloc.json`, `g2f_ecreaction.json`, `g2f_gcablend.json`, `g2f_refmodel.json`,
+  `g2f_release_census_2024.json`, per-environment r and per-row prediction tables).
 
 ```
 pip install numpy pandas
-python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck
+python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck test_g2f_release_census test_g2f_cathistory
 python g2f_baseline.py --data-dir data --out-dir results
 python g2f_envkernel.py --data-dir data --out-dir results
 python g2f_checkhybrid.py --out-dir results
@@ -122,12 +134,16 @@ Rscript g2f_refmodel.R data results
 python g2f_refmodel.py --data-dir data --out-dir results --ref-script script_model.R
 python g2f_refcheck.py split --data-dir data --out-dir results
 python g2f_refcheck.py r0 --data-dir data --out-dir results --ref-pred results/ref_2024_predictions.csv --ref-script script_model.R
+# standard-library tools
+python g2f_release_census.py --data-dir data --out-dir results --expect data/g2f-release-census-expect-2024.json --name g2f_release_census_2024
+python g2f_cathistory.py --data-dir data --out-dir results
 ```
 
 Data: Genomes to Fields 2024 Maize Genotype by Environment Prediction Competition release, CyVerse
 Data Commons, DOI 10.25739/78mn-4394 (Open Data Commons PDDL). Data papers: Lima et al. 2023,
 BMC Research Notes (doi 10.1186/s13104-023-06421-z) and the 2024 competition note
 (doi 10.1186/s13104-026-07629-5). The 2024 leaderboard figures are from EvalAI's public API (challenge
-2376, phase split 5893). This repository is not affiliated with G2F.
+2376, phase split 5893). The 2026 trial design is from genomes2fields.org (project overview, read
+2026-11-09). This repository is not affiliated with G2F.
 
 Licence: code Apache-2.0; text and results CC BY 4.0. Contact: MV2, Munim, Inc., mv2@munimtech.com.

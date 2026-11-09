@@ -1,0 +1,743 @@
+{
+ "by_role": {
+  "geno_numeric": {
+   "data_rows": 5899,
+   "distinct_taxa": 5899,
+   "first_header_cell": "<Marker>",
+   "header_columns": 2425,
+   "header_lines_skipped": 1,
+   "markers": 2425,
+   "orientation": "taxa_in_rows",
+   "row_widths": [
+    2426
+   ],
+   "taxa": 5899,
+   "taxa_matching_trait_hybrids": 4940
+  },
+  "observed": {
+   "columns": [
+    "Env",
+    "Hybrid",
+    "Yield_Mg_ha"
+   ],
+   "env": {
+    "envs": 22,
+    "envs_by_prefix": {
+     "DE": 1,
+     "GA": 2,
+     "IA": 2,
+     "IL": 1,
+     "IN": 1,
+     "MI": 1,
+     "MN": 1,
+     "MO": 1,
+     "NC": 1,
+     "NE": 3,
+     "NY": 2,
+     "OH": 1,
+     "ON": 1,
+     "TX": 1,
+     "WI": 3
+    },
+    "envs_without_year": 0,
+    "locations": 22,
+    "years": [
+     2024
+    ]
+   },
+   "env_hybrid_pairs": 9486,
+   "envs_with_numeric_yield": 22,
+   "hybrids": 1063,
+   "hybrids_with_numeric_yield": 1063,
+   "pairs_with_numeric_yield": 9486,
+   "rows": 9486,
+   "rows_with_numeric_yield": 9486,
+   "short_rows": 0
+  },
+  "template": {
+   "columns": [
+    "Env",
+    "Hybrid",
+    "Yield_Mg_ha"
+   ],
+   "env": {
+    "envs": 23,
+    "envs_by_prefix": {
+     "DE": 1,
+     "GA": 2,
+     "IA": 2,
+     "IL": 1,
+     "IN": 1,
+     "MI": 1,
+     "MN": 1,
+     "MO": 1,
+     "NC": 1,
+     "NE": 3,
+     "NY": 2,
+     "OH": 1,
+     "ON": 1,
+     "SC": 1,
+     "TX": 1,
+     "WI": 3
+    },
+    "envs_without_year": 0,
+    "locations": 23,
+    "years": [
+     2024
+    ]
+   },
+   "env_hybrid_pairs": 10057,
+   "envs_with_numeric_yield": 0,
+   "hybrids": 1063,
+   "hybrids_with_numeric_yield": 0,
+   "pairs_with_numeric_yield": 0,
+   "rows": 10057,
+   "rows_with_numeric_yield": 0,
+   "short_rows": 0
+  },
+  "trait": {
+   "columns": [
+    "Env",
+    "Year",
+    "Field_Location",
+    "Experiment",
+    "Replicate",
+    "Block",
+    "Plot",
+    "Range",
+    "Pass",
+    "Hybrid",
+    "Hybrid_orig_name",
+    "Hybrid_Parent1",
+    "Hybrid_Parent2",
+    "Plot_Area_ha",
+    "Date_Planted",
+    "Date_Harvested",
+    "Stand_Count_plants",
+    "Pollen_DAP_days",
+    "Silk_DAP_days",
+    "Plant_Height_cm",
+    "Ear_Height_cm",
+    "Root_Lodging_plants",
+    "Stalk_Lodging_plants",
+    "Yield_Mg_ha",
+    "Grain_Moisture",
+    "Twt_kg_m3"
+   ],
+   "env": {
+    "envs": 272,
+    "envs_by_prefix": {
+     "AR": 6,
+     "CO": 4,
+     "DE": 10,
+     "GA": 18,
+     "GE": 4,
+     "IA": 38,
+     "IL": 9,
+     "IN": 10,
+     "KS": 3,
+     "MI": 8,
+     "MN": 10,
+     "MO": 14,
+     "NC": 10,
+     "NE": 25,
+     "NY": 26,
+     "OH": 8,
+     "ON": 9,
+     "SC": 6,
+     "SD": 1,
+     "TX": 30,
+     "WI": 23
+    },
+    "envs_without_year": 0,
+    "locations": 47,
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023
+    ]
+   },
+   "env_hybrid_pairs": 111284,
+   "envs_with_numeric_yield": 272,
+   "hybrids": 5205,
+   "hybrids_with_numeric_yield": 5027,
+   "pairs_with_numeric_yield": 107941,
+   "rows": 173960,
+   "rows_with_numeric_yield": 164921,
+   "short_rows": 0,
+   "year_values": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023"
+   ]
+  }
+ },
+ "cross": {
+  "geno_taxa_outside_trait_and_template": 0,
+  "last_training_year": 2023,
+  "observed_envs_with_3plus": 22,
+  "observed_pairs_outside_template": 0,
+  "template_envs_in_training": 0,
+  "template_envs_without_3_observed": [
+   "SCH1_2024"
+  ],
+  "template_hybrids_genotyped": 1063,
+  "template_hybrids_in_last_training_year": 53,
+  "template_hybrids_seen": 104,
+  "template_pairs": 10057,
+  "template_pairs_both_parents_seen": 1911,
+  "template_pairs_genotyped": 10057,
+  "template_pairs_hybrid_in_last_training_year": 688,
+  "template_pairs_hybrid_seen": 1223,
+  "template_pairs_hybrid_seen_at_location": 974,
+  "template_pairs_location_seen": 9635,
+  "template_pairs_one_parent_seen": 8146,
+  "template_pairs_unparsed_hybrid": 0,
+  "template_pairs_with_observation": 9486,
+  "trait_year_overlap": [
+   {
+    "hybrids": 854,
+    "in_any_earlier_year": 0,
+    "in_previous_year": 0,
+    "year": 2014
+   },
+   {
+    "hybrids": 1155,
+    "in_any_earlier_year": 324,
+    "in_previous_year": 324,
+    "year": 2015
+   },
+   {
+    "hybrids": 579,
+    "in_any_earlier_year": 94,
+    "in_previous_year": 91,
+    "year": 2016
+   },
+   {
+    "hybrids": 503,
+    "in_any_earlier_year": 477,
+    "in_previous_year": 470,
+    "year": 2017
+   },
+   {
+    "hybrids": 1054,
+    "in_any_earlier_year": 130,
+    "in_previous_year": 112,
+    "year": 2018
+   },
+   {
+    "hybrids": 1201,
+    "in_any_earlier_year": 947,
+    "in_previous_year": 946,
+    "year": 2019
+   },
+   {
+    "hybrids": 1176,
+    "in_any_earlier_year": 44,
+    "in_previous_year": 25,
+    "year": 2020
+   },
+   {
+    "hybrids": 1181,
+    "in_any_earlier_year": 1174,
+    "in_previous_year": 1174,
+    "year": 2021
+   },
+   {
+    "hybrids": 553,
+    "in_any_earlier_year": 45,
+    "in_previous_year": 45,
+    "year": 2022
+   },
+   {
+    "hybrids": 556,
+    "in_any_earlier_year": 550,
+    "in_previous_year": 550,
+    "year": 2023
+   }
+  ]
+ },
+ "data_dir_files": 4,
+ "expect": {
+  "geno_markers": {
+   "held": true,
+   "source": "N4 data note: '2,425 SNP markers'",
+   "spec": {
+    "eq": 2425
+   },
+   "value": 2425
+  },
+  "geno_taxa": {
+   "held": false,
+   "source": "C8 g2f-baseline-v1 genotyped_hybrids",
+   "spec": {
+    "eq": 5897
+   },
+   "value": 5899
+  },
+  "observed_envs_with_3plus": {
+   "held": true,
+   "source": "C9 g2f-baseline-v1 scored 22 environments in 2024",
+   "spec": {
+    "eq": 22
+   },
+   "value": 22
+  },
+  "template_envs": {
+   "held": true,
+   "source": "N6 data note: '23 test locations'",
+   "spec": {
+    "eq": 23
+   },
+   "value": 23
+  },
+  "template_hybrids": {
+   "held": true,
+   "source": "N5 data note: '1,063 maize hybrids'",
+   "spec": {
+    "eq": 1063
+   },
+   "value": 1063
+  },
+  "template_pairs": {
+   "held": true,
+   "source": "C3 g2f-baseline-v1 test_rows",
+   "spec": {
+    "eq": 10057
+   },
+   "value": 10057
+  },
+  "template_pairs_genotyped": {
+   "held": true,
+   "source": "C6 g2f-baseline-v1 share_rows_hybrid_genotyped 1.0",
+   "spec": {
+    "eq": 10057
+   },
+   "value": 10057
+  },
+  "template_pairs_hybrid_seen": {
+   "held": true,
+   "source": "C4 g2f-baseline-v1 share_rows_hybrid_seen 0.1216",
+   "spec": {
+    "max": 1228,
+    "min": 1218
+   },
+   "value": 1223
+  },
+  "template_pairs_hybrid_seen_at_location": {
+   "held": true,
+   "source": "C5 g2f-baseline-v1 share_rows_hybrid_seen_at_location 0.0968",
+   "spec": {
+    "max": 979,
+    "min": 969
+   },
+   "value": 974
+  },
+  "template_pairs_with_observation": {
+   "held": true,
+   "source": "C7 g2f-baseline-v1 template_rows_with_observation",
+   "spec": {
+    "eq": 9486
+   },
+   "value": 9486
+  },
+  "trait_envs": {
+   "held": true,
+   "source": "N2 data note: '272 environments'",
+   "spec": {
+    "eq": 272
+   },
+   "value": 272
+  },
+  "trait_envs_with_numeric_yield": {
+   "held": true,
+   "source": "C1 g2f-baseline-v1 train_envs (2024 fold)",
+   "spec": {
+    "eq": 272
+   },
+   "value": 272
+  },
+  "trait_hybrids": {
+   "held": true,
+   "source": "N1 data note: '5,205 hybrids evaluated across 272 environments'",
+   "spec": {
+    "eq": 5205
+   },
+   "value": 5205
+  },
+  "trait_hybrids_with_numeric_yield": {
+   "held": true,
+   "source": "C2 g2f-baseline-v1 train_hybrids 5027",
+   "spec": {
+    "max": 5037,
+    "min": 5017
+   },
+   "value": 5027
+  },
+  "trait_rows": {
+   "held": true,
+   "source": "N3 data note: 'approximately 180,000 maize field plots'",
+   "spec": {
+    "max": 190000,
+    "min": 170000
+   },
+   "value": 173960
+  },
+  "trait_rows_with_numeric_yield": {
+   "held": true,
+   "source": "C10 g2f-baseline-v1 trait_rows",
+   "spec": {
+    "eq": 164921
+   },
+   "value": 164921
+  }
+ },
+ "expect_held": 15,
+ "expect_total": 16,
+ "files": [
+  {
+   "bytes": 336283,
+   "csv": {
+    "columns": [
+     "Env",
+     "Hybrid",
+     "Yield_Mg_ha"
+    ],
+    "env": {
+     "envs": 23,
+     "envs_by_prefix": {
+      "DE": 1,
+      "GA": 2,
+      "IA": 2,
+      "IL": 1,
+      "IN": 1,
+      "MI": 1,
+      "MN": 1,
+      "MO": 1,
+      "NC": 1,
+      "NE": 3,
+      "NY": 2,
+      "OH": 1,
+      "ON": 1,
+      "SC": 1,
+      "TX": 1,
+      "WI": 3
+     },
+     "envs_without_year": 0,
+     "locations": 23,
+     "years": [
+      2024
+     ]
+    },
+    "env_hybrid_pairs": 10057,
+    "envs_with_numeric_yield": 0,
+    "hybrids": 1063,
+    "hybrids_with_numeric_yield": 0,
+    "pairs_with_numeric_yield": 0,
+    "rows": 10057,
+    "rows_with_numeric_yield": 0,
+    "short_rows": 0
+   },
+   "file": "1_Submission_Template_2024.csv",
+   "role": "template",
+   "sha256": "80969670ef0f61c16d3dcaa1c410b1f1c628a2d0ca3ad21d444236e7ce8c4178",
+   "split": null
+  },
+  {
+   "bytes": 31590253,
+   "csv": {
+    "columns": [
+     "Env",
+     "Year",
+     "Field_Location",
+     "Experiment",
+     "Replicate",
+     "Block",
+     "Plot",
+     "Range",
+     "Pass",
+     "Hybrid",
+     "Hybrid_orig_name",
+     "Hybrid_Parent1",
+     "Hybrid_Parent2",
+     "Plot_Area_ha",
+     "Date_Planted",
+     "Date_Harvested",
+     "Stand_Count_plants",
+     "Pollen_DAP_days",
+     "Silk_DAP_days",
+     "Plant_Height_cm",
+     "Ear_Height_cm",
+     "Root_Lodging_plants",
+     "Stalk_Lodging_plants",
+     "Yield_Mg_ha",
+     "Grain_Moisture",
+     "Twt_kg_m3"
+    ],
+    "env": {
+     "envs": 272,
+     "envs_by_prefix": {
+      "AR": 6,
+      "CO": 4,
+      "DE": 10,
+      "GA": 18,
+      "GE": 4,
+      "IA": 38,
+      "IL": 9,
+      "IN": 10,
+      "KS": 3,
+      "MI": 8,
+      "MN": 10,
+      "MO": 14,
+      "NC": 10,
+      "NE": 25,
+      "NY": 26,
+      "OH": 8,
+      "ON": 9,
+      "SC": 6,
+      "SD": 1,
+      "TX": 30,
+      "WI": 23
+     },
+     "envs_without_year": 0,
+     "locations": 47,
+     "years": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+     ]
+    },
+    "env_hybrid_pairs": 111284,
+    "envs_with_numeric_yield": 272,
+    "hybrids": 5205,
+    "hybrids_with_numeric_yield": 5027,
+    "pairs_with_numeric_yield": 107941,
+    "rows": 173960,
+    "rows_with_numeric_yield": 164921,
+    "short_rows": 0,
+    "year_values": [
+     "2014",
+     "2015",
+     "2016",
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023"
+    ]
+   },
+   "file": "1_Training_Trait_Data_2014_2023.csv",
+   "role": "trait",
+   "sha256": "f206848428c9e7ff330716b0fc46ed78590deeb6dd38433b0b1b23a0390a21fb",
+   "split": "training"
+  },
+  {
+   "bytes": 40765753,
+   "file": "5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+   "numeric": {
+    "data_rows": 5899,
+    "distinct_taxa": 5899,
+    "first_header_cell": "<Marker>",
+    "header_columns": 2425,
+    "header_lines_skipped": 1,
+    "markers": 2425,
+    "orientation": "taxa_in_rows",
+    "row_widths": [
+     2426
+    ],
+    "taxa": 5899,
+    "taxa_matching_trait_hybrids": 4940
+   },
+   "role": "geno_numeric",
+   "sha256": "7113e3fcf53e26c13e6f00a9a467870c8eb664f7d9777a7737cde03b75aaf10a",
+   "split": null
+  },
+  {
+   "bytes": 420463,
+   "csv": {
+    "columns": [
+     "Env",
+     "Hybrid",
+     "Yield_Mg_ha"
+    ],
+    "env": {
+     "envs": 22,
+     "envs_by_prefix": {
+      "DE": 1,
+      "GA": 2,
+      "IA": 2,
+      "IL": 1,
+      "IN": 1,
+      "MI": 1,
+      "MN": 1,
+      "MO": 1,
+      "NC": 1,
+      "NE": 3,
+      "NY": 2,
+      "OH": 1,
+      "ON": 1,
+      "TX": 1,
+      "WI": 3
+     },
+     "envs_without_year": 0,
+     "locations": 22,
+     "years": [
+      2024
+     ]
+    },
+    "env_hybrid_pairs": 9486,
+    "envs_with_numeric_yield": 22,
+    "hybrids": 1063,
+    "hybrids_with_numeric_yield": 1063,
+    "pairs_with_numeric_yield": 9486,
+    "rows": 9486,
+    "rows_with_numeric_yield": 9486,
+    "short_rows": 0
+   },
+   "file": "7_Testing_Observed_Values.csv",
+   "role": "observed",
+   "sha256": "8bd354c44bce50abd09a9839272112fdb34bdb96ec6e37ae644eda916aeeabcc",
+   "split": "testing"
+  }
+ ],
+ "flat": {
+  "geno_markers": 2425,
+  "geno_taxa": 5899,
+  "geno_taxa_outside_trait_and_template": 0,
+  "last_training_year": 2023,
+  "observed_envs": 22,
+  "observed_envs_with_3plus": 22,
+  "observed_envs_with_numeric_yield": 22,
+  "observed_hybrids": 1063,
+  "observed_hybrids_with_numeric_yield": 1063,
+  "observed_locations": 22,
+  "observed_pairs_outside_template": 0,
+  "observed_pairs_with_numeric_yield": 9486,
+  "observed_rows": 9486,
+  "observed_rows_with_numeric_yield": 9486,
+  "template_envs": 23,
+  "template_envs_in_training": 0,
+  "template_envs_with_numeric_yield": 0,
+  "template_envs_without_3_observed": [
+   "SCH1_2024"
+  ],
+  "template_hybrids": 1063,
+  "template_hybrids_genotyped": 1063,
+  "template_hybrids_in_last_training_year": 53,
+  "template_hybrids_seen": 104,
+  "template_hybrids_with_numeric_yield": 0,
+  "template_locations": 23,
+  "template_pairs": 10057,
+  "template_pairs_both_parents_seen": 1911,
+  "template_pairs_genotyped": 10057,
+  "template_pairs_hybrid_in_last_training_year": 688,
+  "template_pairs_hybrid_seen": 1223,
+  "template_pairs_hybrid_seen_at_location": 974,
+  "template_pairs_location_seen": 9635,
+  "template_pairs_one_parent_seen": 8146,
+  "template_pairs_unparsed_hybrid": 0,
+  "template_pairs_with_numeric_yield": 0,
+  "template_pairs_with_observation": 9486,
+  "template_rows": 10057,
+  "template_rows_with_numeric_yield": 0,
+  "trait_envs": 272,
+  "trait_envs_with_numeric_yield": 272,
+  "trait_hybrids": 5205,
+  "trait_hybrids_with_numeric_yield": 5027,
+  "trait_locations": 47,
+  "trait_pairs_with_numeric_yield": 107941,
+  "trait_rows": 173960,
+  "trait_rows_with_numeric_yield": 164921,
+  "trait_year_overlap": [
+   {
+    "hybrids": 854,
+    "in_any_earlier_year": 0,
+    "in_previous_year": 0,
+    "year": 2014
+   },
+   {
+    "hybrids": 1155,
+    "in_any_earlier_year": 324,
+    "in_previous_year": 324,
+    "year": 2015
+   },
+   {
+    "hybrids": 579,
+    "in_any_earlier_year": 94,
+    "in_previous_year": 91,
+    "year": 2016
+   },
+   {
+    "hybrids": 503,
+    "in_any_earlier_year": 477,
+    "in_previous_year": 470,
+    "year": 2017
+   },
+   {
+    "hybrids": 1054,
+    "in_any_earlier_year": 130,
+    "in_previous_year": 112,
+    "year": 2018
+   },
+   {
+    "hybrids": 1201,
+    "in_any_earlier_year": 947,
+    "in_previous_year": 946,
+    "year": 2019
+   },
+   {
+    "hybrids": 1176,
+    "in_any_earlier_year": 44,
+    "in_previous_year": 25,
+    "year": 2020
+   },
+   {
+    "hybrids": 1181,
+    "in_any_earlier_year": 1174,
+    "in_previous_year": 1174,
+    "year": 2021
+   },
+   {
+    "hybrids": 553,
+    "in_any_earlier_year": 45,
+    "in_previous_year": 45,
+    "year": 2022
+   },
+   {
+    "hybrids": 556,
+    "in_any_earlier_year": 550,
+    "in_previous_year": 550,
+    "year": 2023
+   }
+  ]
+ },
+ "roles_used": {
+  "observed": "7_Testing_Observed_Values.csv",
+  "template": "1_Submission_Template_2024.csv",
+  "trait": "1_Training_Trait_Data_2014_2023.csv"
+ },
+ "version": "0.1.0"
+}
