@@ -1,0 +1,916 @@
+{
+ "checks_2026": {
+  "case": 0,
+  "checks": [
+   {
+    "check": "2369/LH123HT",
+    "match": "exact",
+    "years": [
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "B14A/OH43",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "B37/H95",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "B73/MO17",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "B73/PHN82",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "CG119/CG108",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "LH195/PHZ51",
+    "match": "exact",
+    "years": [
+     2015,
+     2016,
+     2017,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "LH244/PHK76",
+    "match": "exact",
+    "years": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "LH287/LH244",
+    "match": "exact",
+    "years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PH24E/LH244",
+    "match": "exact",
+    "years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHB47/PHN82",
+    "match": "exact",
+    "years": [
+     2015,
+     2016,
+     2017,
+     2018,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHB47/PHZ51",
+    "match": "exact",
+    "years": [
+     2015,
+     2016,
+     2017,
+     2018,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHG29/PHG47",
+    "match": "exact",
+    "years": [
+     2016,
+     2017,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHG39/PHN82",
+    "match": "exact",
+    "years": [
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHR03/LH244",
+    "match": "exact",
+    "years": [
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "PHRE1/PHTD5",
+    "match": "exact",
+    "years": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "TX777/LH195",
+    "match": "exact",
+    "years": [
+     2015,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024
+    ]
+   },
+   {
+    "check": "01DIB2/LH287",
+    "match": "exact",
+    "years": [
+     2024
+    ]
+   },
+   {
+    "check": "01CSI6/LH287",
+    "match": "exact",
+    "years": [
+     2024
+    ]
+   }
+  ],
+  "exact": 19,
+  "none": 0,
+  "swapped": 0
+ },
+ "files": [
+  "1_Training_Trait_Data_2014_2023.csv",
+  "7_Testing_Observed_Values.csv"
+ ],
+ "graded": 8,
+ "grades": {
+  "H1_new_none_at_most_5pct_every_season": {
+   "held": false,
+   "value": [
+    "2016",
+    0.2375
+   ]
+  },
+  "H2_new_one_largest_in_even_seasons": {
+   "held": true,
+   "value": {
+    "2016": "new_one",
+    "2018": "new_one",
+    "2020": "new_one",
+    "2022": "new_one",
+    "2024": "new_one"
+   }
+  },
+  "H3_seen_at_least_75pct_in_odd_seasons": {
+   "held": true,
+   "value": {
+    "2017": 0.951,
+    "2019": 0.7778,
+    "2021": 0.9978,
+    "2023": 0.9935
+   }
+  },
+  "H4_at_least_15_checks_exact": {
+   "held": true,
+   "value": 19
+  },
+  "H5_PHP02_LH287_top_two_2024": {
+   "held": true,
+   "value": [
+    [
+     "LH287",
+     506
+    ],
+    [
+     "PHP02",
+     506
+    ]
+   ]
+  },
+  "H6_name_split_agrees_99pct": {
+   "held": false,
+   "value": 0.9666
+  },
+  "K1_2024_counts_match_newshrink": {
+   "held": true,
+   "value": {
+    "new_both": 638,
+    "new_none": 0,
+    "new_one": 7676,
+    "seen": 1172
+   }
+  },
+  "K2_2022_counts_match_newshrink": {
+   "held": true,
+   "value": {
+    "new_both": 1896,
+    "new_none": 0,
+    "new_one": 9126,
+    "seen": 816
+   }
+  }
+ },
+ "held": 6,
+ "name_check": {
+  "agree": 5092,
+  "agree_share": 0.9666,
+  "combos": 5268,
+  "disagree": 176,
+  "disagree_examples": [
+   [
+    "1319YHR",
+    "NA",
+    "NA"
+   ],
+   [
+    "1637YHR",
+    "NA",
+    "NA"
+   ],
+   [
+    "2160YHR",
+    "NA",
+    "NA"
+   ],
+   [
+    "31G66",
+    "NA",
+    "NA"
+   ],
+   [
+    "31G71",
+    "NA",
+    "NA"
+   ],
+   [
+    "33M54",
+    "NA",
+    "NA"
+   ],
+   [
+    "3899VT2PRIB",
+    "NA",
+    "NA"
+   ],
+   [
+    "38B13",
+    "NA",
+    "NA"
+   ],
+   [
+    "38N85",
+    "NA",
+    "NA"
+   ],
+   [
+    "5618STXRIB",
+    "NA",
+    "NA"
+   ]
+  ]
+ },
+ "parents": 2695,
+ "seasons": {
+  "2015": {
+   "distinct_parents": 550,
+   "hybrids": 1155,
+   "hybrids_by_category": {
+    "new_both": 389,
+    "new_none": 2,
+    "new_one": 440,
+    "seen": 324
+   },
+   "new_one_top_seen_parent": [
+    "PHB47",
+    0.3987
+   ],
+   "pairs": 10790,
+   "pairs_by_category": {
+    "new_both": 3162,
+    "new_none": 12,
+    "new_one": 4785,
+    "seen": 2831
+   },
+   "parent_pool": 375,
+   "share_by_category": {
+    "new_both": 0.293,
+    "new_none": 0.0011,
+    "new_one": 0.4435,
+    "seen": 0.2624
+   },
+   "top_parents_by_hybrids": [
+    [
+     "PHB47",
+     276
+    ],
+    [
+     "PHZ51",
+     248
+    ],
+    [
+     "LH82",
+     201
+    ],
+    [
+     "LH185",
+     133
+    ],
+    [
+     "LH195",
+     130
+    ]
+   ],
+   "train_hybrids": 854,
+   "unparsed_pairs": 0
+  },
+  "2016": {
+   "distinct_parents": 310,
+   "hybrids": 579,
+   "hybrids_by_category": {
+    "new_both": 79,
+    "new_none": 137,
+    "new_one": 269,
+    "seen": 94
+   },
+   "new_one_top_seen_parent": [
+    "LH195",
+    0.3118
+   ],
+   "pairs": 7415,
+   "pairs_by_category": {
+    "new_both": 977,
+    "new_none": 1761,
+    "new_one": 3024,
+    "seen": 1653
+   },
+   "parent_pool": 668,
+   "share_by_category": {
+    "new_both": 0.1318,
+    "new_none": 0.2375,
+    "new_one": 0.4078,
+    "seen": 0.2229
+   },
+   "top_parents_by_hybrids": [
+    [
+     "DK3IIH6",
+     147
+    ],
+    [
+     "LH195",
+     96
+    ],
+    [
+     "PHZ51",
+     62
+    ],
+    [
+     "PHB47",
+     32
+    ],
+    [
+     "LH162",
+     26
+    ]
+   ],
+   "train_hybrids": 1685,
+   "unparsed_pairs": 0
+  },
+  "2017": {
+   "distinct_parents": 255,
+   "hybrids": 503,
+   "hybrids_by_category": {
+    "new_both": 18,
+    "new_none": 0,
+    "new_one": 8,
+    "seen": 477
+   },
+   "new_one_top_seen_parent": [
+    "DK3IIH6",
+    0.3836
+   ],
+   "pairs": 6039,
+   "pairs_by_category": {
+    "new_both": 223,
+    "new_none": 0,
+    "new_one": 73,
+    "seen": 5743
+   },
+   "parent_pool": 877,
+   "share_by_category": {
+    "new_both": 0.0369,
+    "new_none": 0.0,
+    "new_one": 0.0121,
+    "seen": 0.951
+   },
+   "top_parents_by_hybrids": [
+    [
+     "DK3IIH6",
+     128
+    ],
+    [
+     "LH195",
+     57
+    ],
+    [
+     "PHZ51",
+     56
+    ],
+    [
+     "PHB47",
+     32
+    ],
+    [
+     "PHW52",
+     25
+    ]
+   ],
+   "train_hybrids": 2170,
+   "unparsed_pairs": 0
+  },
+  "2018": {
+   "distinct_parents": 603,
+   "hybrids": 1054,
+   "hybrids_by_category": {
+    "new_both": 31,
+    "new_none": 1,
+    "new_one": 892,
+    "seen": 130
+   },
+   "new_one_top_seen_parent": [
+    "LH195",
+    0.6905
+   ],
+   "pairs": 13982,
+   "pairs_by_category": {
+    "new_both": 348,
+    "new_none": 10,
+    "new_one": 12635,
+    "seen": 989
+   },
+   "parent_pool": 884,
+   "share_by_category": {
+    "new_both": 0.0249,
+    "new_none": 0.0007,
+    "new_one": 0.9037,
+    "seen": 0.0707
+   },
+   "top_parents_by_hybrids": [
+    [
+     "PHT69",
+     505
+    ],
+    [
+     "LH195",
+     428
+    ],
+    [
+     "LH145",
+     16
+    ],
+    [
+     "PHB47",
+     16
+    ],
+    [
+     "S8324",
+     16
+    ]
+   ],
+   "train_hybrids": 2196,
+   "unparsed_pairs": 0
+  },
+  "2019": {
+   "distinct_parents": 626,
+   "hybrids": 1201,
+   "hybrids_by_category": {
+    "new_both": 168,
+    "new_none": 0,
+    "new_one": 86,
+    "seen": 947
+   },
+   "new_one_top_seen_parent": [
+    "LH195",
+    0.7169
+   ],
+   "pairs": 15541,
+   "pairs_by_category": {
+    "new_both": 2425,
+    "new_none": 0,
+    "new_one": 1028,
+    "seen": 12088
+   },
+   "parent_pool": 1416,
+   "share_by_category": {
+    "new_both": 0.156,
+    "new_none": 0.0,
+    "new_one": 0.0661,
+    "seen": 0.7778
+   },
+   "top_parents_by_hybrids": [
+    [
+     "PHT69",
+     594
+    ],
+    [
+     "LH195",
+     582
+    ],
+    [
+     "B73",
+     4
+    ],
+    [
+     "MO17",
+     4
+    ],
+    [
+     "PHN82",
+     4
+    ]
+   ],
+   "train_hybrids": 3120,
+   "unparsed_pairs": 0
+  },
+  "2020": {
+   "distinct_parents": 420,
+   "hybrids": 1176,
+   "hybrids_by_category": {
+    "new_both": 74,
+    "new_none": 0,
+    "new_one": 1058,
+    "seen": 44
+   },
+   "new_one_top_seen_parent": [
+    "PHZ51",
+    0.4068
+   ],
+   "pairs": 11305,
+   "pairs_by_category": {
+    "new_both": 746,
+    "new_none": 0,
+    "new_one": 9805,
+    "seen": 754
+   },
+   "parent_pool": 1464,
+   "share_by_category": {
+    "new_both": 0.066,
+    "new_none": 0.0,
+    "new_one": 0.8673,
+    "seen": 0.0667
+   },
+   "top_parents_by_hybrids": [
+    [
+     "PHZ51",
+     382
+    ],
+    [
+     "PHK76",
+     379
+    ],
+    [
+     "PHP02",
+     375
+    ],
+    [
+     "LH195",
+     7
+    ],
+    [
+     "MO17",
+     7
+    ]
+   ],
+   "train_hybrids": 3374,
+   "unparsed_pairs": 0
+  },
+  "2021": {
+   "distinct_parents": 425,
+   "hybrids": 1181,
+   "hybrids_by_category": {
+    "new_both": 2,
+    "new_none": 0,
+    "new_one": 5,
+    "seen": 1174
+   },
+   "new_one_top_seen_parent": [
+    "PHZ51",
+    1.0
+   ],
+   "pairs": 13628,
+   "pairs_by_category": {
+    "new_both": 12,
+    "new_none": 0,
+    "new_one": 18,
+    "seen": 13598
+   },
+   "parent_pool": 1819,
+   "share_by_category": {
+    "new_both": 0.0009,
+    "new_none": 0.0,
+    "new_one": 0.0013,
+    "seen": 0.9978
+   },
+   "top_parents_by_hybrids": [
+    [
+     "PHZ51",
+     387
+    ],
+    [
+     "PHK76",
+     379
+    ],
+    [
+     "PHP02",
+     375
+    ],
+    [
+     "LH195",
+     7
+    ],
+    [
+     "MO17",
+     7
+    ]
+   ],
+   "train_hybrids": 4506,
+   "unparsed_pairs": 0
+  },
+  "2022": {
+   "distinct_parents": 540,
+   "hybrids": 553,
+   "hybrids_by_category": {
+    "new_both": 80,
+    "new_none": 0,
+    "new_one": 428,
+    "seen": 45
+   },
+   "new_one_top_seen_parent": [
+    "LH244",
+    1.0
+   ],
+   "pairs": 11838,
+   "pairs_by_category": {
+    "new_both": 1896,
+    "new_none": 0,
+    "new_one": 9126,
+    "seen": 816
+   },
+   "parent_pool": 1824,
+   "share_by_category": {
+    "new_both": 0.1602,
+    "new_none": 0.0,
+    "new_one": 0.7709,
+    "seen": 0.0689
+   },
+   "top_parents_by_hybrids": [
+    [
+     "LH244",
+     512
+    ],
+    [
+     "LH195",
+     7
+    ],
+    [
+     "MO17",
+     7
+    ],
+    [
+     "PHN82",
+     7
+    ],
+    [
+     "B73",
+     6
+    ]
+   ],
+   "train_hybrids": 4513,
+   "unparsed_pairs": 0
+  },
+  "2023": {
+   "distinct_parents": 542,
+   "hybrids": 556,
+   "hybrids_by_category": {
+    "new_both": 4,
+    "new_none": 1,
+    "new_one": 1,
+    "seen": 550
+   },
+   "new_one_top_seen_parent": [
+    "LH244",
+    1.0
+   ],
+   "pairs": 11615,
+   "pairs_by_category": {
+    "new_both": 67,
+    "new_none": 1,
+    "new_one": 7,
+    "seen": 11540
+   },
+   "parent_pool": 2252,
+   "share_by_category": {
+    "new_both": 0.0058,
+    "new_none": 0.0001,
+    "new_one": 0.0006,
+    "seen": 0.9935
+   },
+   "top_parents_by_hybrids": [
+    [
+     "LH244",
+     514
+    ],
+    [
+     "MO17",
+     8
+    ],
+    [
+     "PHN82",
+     7
+    ],
+    [
+     "B73",
+     6
+    ],
+    [
+     "LH195",
+     6
+    ]
+   ],
+   "train_hybrids": 5021,
+   "unparsed_pairs": 0
+  },
+  "2024": {
+   "distinct_parents": 548,
+   "hybrids": 1063,
+   "hybrids_by_category": {
+    "new_both": 82,
+    "new_none": 0,
+    "new_one": 877,
+    "seen": 104
+   },
+   "new_one_top_seen_parent": [
+    "PHP02",
+    0.5788
+   ],
+   "pairs": 9486,
+   "pairs_by_category": {
+    "new_both": 638,
+    "new_none": 0,
+    "new_one": 7676,
+    "seen": 1172
+   },
+   "parent_pool": 2255,
+   "share_by_category": {
+    "new_both": 0.0673,
+    "new_none": 0.0,
+    "new_one": 0.8092,
+    "seen": 0.1236
+   },
+   "top_parents_by_hybrids": [
+    [
+     "LH287",
+     506
+    ],
+    [
+     "PHP02",
+     506
+    ],
+    [
+     "LH244",
+     16
+    ],
+    [
+     "LH195",
+     7
+    ],
+    [
+     "MO17",
+     7
+    ]
+   ],
+   "train_hybrids": 5027,
+   "unparsed_pairs": 0
+  }
+ },
+ "version": "0.1.0"
+}
