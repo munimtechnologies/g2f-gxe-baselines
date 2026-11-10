@@ -1,0 +1,61 @@
+{
+ "checks": {
+  "K1_plan_2024": {
+   "held": false
+  },
+  "K2_plan_sim_2026": {
+   "held": true
+  },
+  "K3_full_2024_reproduced": {
+   "held": true,
+   "value": 0.4416
+  }
+ },
+ "held": 2,
+ "plan_2024": {
+  "geno_file": "/data/5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+  "holdout_folds": "none",
+  "mode": "plan",
+  "template_envs": "23",
+  "template_file": "/data/1_Submission_Template_2024.csv",
+  "template_pairs": "10057",
+  "test_fold": "2024",
+  "trait_file": "/data/1_Training_Trait_Data_2014_2023.csv",
+  "trait_rows": "164921",
+  "trait_years": "2014-2023",
+  "version": "0.2.0"
+ },
+ "plan_sim": {
+  "geno_file": "/tmp/sim/Training_data/5_Genotype_Data_All_2014_2026_Hybrids_numerical.txt",
+  "holdout_folds": "none",
+  "mode": "plan",
+  "template_envs": "23",
+  "template_file": "/tmp/sim/Testing_data/1_Submission_Template_2026.csv",
+  "template_pairs": "10057",
+  "test_fold": "2026",
+  "trait_file": "/tmp/sim/Training_data/1_Training_Trait_Data_2014_2025.csv",
+  "trait_rows": "164921",
+  "trait_years": "2014-2023",
+  "version": "0.2.0"
+ },
+ "scores_2024": {
+  "allloc": {
+   "envs": 22,
+   "mean_r": 0.4418
+  },
+  "b1": {
+   "envs": 22,
+   "mean_r": -0.0
+  },
+  "b2": {
+   "envs": 22,
+   "mean_r": 0.4416
+  },
+  "full": {
+   "envs": 22,
+   "mean_r": 0.4416
+  }
+ },
+ "total": 3,
+ "version": "0.1.0"
+}

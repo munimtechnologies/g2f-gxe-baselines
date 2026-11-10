@@ -1,0 +1,11 @@
+{
+ "season": 2024,
+ "test_setting": "new_hybrids",
+ "folds": {"2023": "repeated_hybrids", "2022": "new_hybrids"},
+ "choose_on": [2022],
+ "raw": {"2022": {"M4": 0.3262, "full": 0.2987}},
+ "tol": 0.0005,
+ "entry": "a0.50_b0.50",
+ "entry_score": 0.3617,
+ "report_fold": "2023"
+}

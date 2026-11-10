@@ -1,0 +1,49 @@
+{
+ "categories": {
+  "new_both": 688,
+  "new_none": 0,
+  "new_one": 8146,
+  "seen": 1223
+ },
+ "decision": {
+  "choose_on": "the 2024-like fold (mostly hybrids never tested before)",
+  "setting": "new_hybrids",
+  "share_in_last_year": 0.0684,
+  "threshold": 0.7
+ },
+ "files": {
+  "geno_numeric": "5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+  "observed": "7_Testing_Observed_Values.csv",
+  "template": "1_Submission_Template_2024.csv",
+  "trait": "1_Training_Trait_Data_2014_2023.csv"
+ },
+ "seen": {
+  "last_training_year": 2023,
+  "pairs_hybrid_in_last_year": 688,
+  "pairs_hybrid_seen": 1223,
+  "share_in_last_year": 0.0684,
+  "share_seen": 0.1216,
+  "template_pairs": 10057,
+  "training_years": [
+   2014,
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023
+  ]
+ },
+ "template_envs": 23,
+ "template_pairs": 10057,
+ "test_season": 2024,
+ "training_rows": 164921,
+ "training_years": [
+  2014,
+  2023
+ ],
+ "version": "0.1.0"
+}
