@@ -54,8 +54,11 @@ and wrote three Mg/ha files (M4, full, mix) that validate with all 10,057 rows a
 their unscaled columns score. It never downloads data on its own. `mgha` (g2f-entry 0.2.0) also shows
 that if a round is scored by error (as 2022 was, by RMSE), the environment level dominates: the
 site-history levels miss each 2024 environment's mean by 2.0 Mg/ha on average, mostly too low, while
-the hybrid ranking lowers the RMSE by only 0.05 Mg/ha. The 2026 metric is read when the training data
-are released (2026-11-16).
+the hybrid ranking lowers the RMSE by only 0.05 Mg/ha. **g2f-level 0.1.0** (pre-registered 2026-11-10;
+sealed dry run queued) compares six level rules (site history, recent seasons, site anomalies, shrunk
+anomalies, a yield trend) chosen on the 2022 and 2023 folds and checked on 2024, so a better level is
+ready if 2026 is scored by error. The 2026 metric is read when the training data are released
+(2026-11-16).
 
 ## Results so far
 
@@ -86,6 +89,7 @@ Tools for the 2026 season (training data released 2026-11-16):
 | g2f-switch 0.1.0 `apply` | study graded (6 of 6) | mixes two prediction columns by hybrid category for a real upload (then `g2f_entry.py mgha`) |
 | g2f-predict 0.1.0 | **checked on the 2024 release: all 5 held** (M4 0.3018 and mix 0.4330 reproduced; 3 of 3 files valid, 10,057 rows; file scores equal column scores) | `plan` and `predict` for any release layout: M4, full and the mix, each as a validated Mg/ha upload file; never downloads |
 | g2f-refold 0.1.0 | **pre-registered** (2026-11-10); dry run on the 2024 release queued (D1-D6) | `choose`: types the test season and each hold-out season (new vs repeated hybrids) and picks the mix weights (a, b) on the hold-out seasons of the test season's type, for any release |
+| g2f-level 0.1.0 | **pre-registered** (2026-11-10); dry run on the 2024 release queued (L1-L6) | `choose`: six rules for each test environment's yield level, chosen on hold-out seasons by level RMSE; `entry_plan` hands the chosen levels to `g2f_entry.rescale` (standard library only) |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -151,6 +155,9 @@ See the result files in [`docs/`](docs/).
   `predict`) and its graded 2024 dry run.
 - `docs/g2f-refold-0.1.0.md`, `g2f_refold.py`, `test_g2f_refold.py`, `data/g2f-refold-expect-2024.json`:
   re-chooses the mix weights on the hold-out seasons that match the test season's type, for any release.
+- `docs/g2f-level-0.1.0.md`, `g2f_level.py`, `test_g2f_level.py`, `data/g2f-level-expect-2024.json`:
+  chooses each test environment's yield level (Mg/ha) from six fixed rules on hold-out seasons, for an
+  error-scored round (standard library only).
 - `docs/g2f-release-census-0.1.0.md`, `docs/g2f-release-census-0.1.0-result.md`,
   `g2f_release_census.py`, `test_g2f_release_census.py`, `data/g2f-release-census-expect-2024.json`:
   release census (standard library only) and its dry run on the 2024 release.
@@ -172,7 +179,7 @@ See the result files in [`docs/`](docs/).
 
 ```
 pip install numpy pandas
-python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck test_g2f_switch test_g2f_release_census test_g2f_cathistory test_g2f_entry test_g2f_predict test_g2f_refold
+python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck test_g2f_switch test_g2f_release_census test_g2f_cathistory test_g2f_entry test_g2f_predict test_g2f_refold test_g2f_level
 python g2f_baseline.py --data-dir data --out-dir results
 python g2f_envkernel.py --data-dir data --out-dir results
 python g2f_checkhybrid.py --out-dir results
@@ -194,11 +201,14 @@ python g2f_release_census.py --data-dir data --out-dir results --expect data/g2f
 python g2f_cathistory.py --data-dir data --out-dir results
 python g2f_entry.py dryrun --data-dir data --out-dir results --pred results/g2f_parentgca_2024_predictions.csv --col M4 --expect data/g2f-entry-expect-2024.json --name g2f_entry_dryrun_2024
 python g2f_entry.py dryrun-mgha --data-dir data --out-dir results --pred results/g2f_parentgca_2024_predictions.csv --col M4 --expect data/g2f-entry-mgha-expect-2024.json --name g2f_entry_mgha_2024
+python g2f_level.py choose --data-dir data --out-dir results --expect data/g2f-level-expect-2024.json --name g2f_level_2024
 # release day: list what a release holds, choose the mix weights on matching past seasons, then build
 # M4 / full / mix upload files in Mg/ha (validated)
 python g2f_predict.py plan --data-dir <release folder> --out-dir results
 python g2f_refold.py choose --data-dir <release folder> --out-dir results --full-dir <preds/ from g2f_refmodel.R ... all> [--folds 2]
 python g2f_predict.py predict --data-dir <release folder> --out-dir results --full <preds/<season>.csv from g2f_refmodel.R> [--a 0.5 --b 0.5]
+# if the round is scored by error: choose the level rule on the release's own hold-out seasons
+python g2f_level.py choose --data-dir <release folder> --out-dir results [--folds 2]
 # or by hand: mix two models by hybrid category, then predictions on any scale -> Mg/ha file
 python g2f_switch.py apply --pred <table with M4 and full columns> --trait <trait csv> --a <a> --b <b> --out mix.csv
 python g2f_entry.py mgha --trait <trait csv> --template <template csv> --pred mix.csv --col mix --out submission.csv

@@ -1,0 +1,10 @@
+{
+ "season": 2024,
+ "folds": [2023, 2022],
+ "tol": 0.0005,
+ "rmse_floor": 1.5,
+ "repro": {
+  "site_all": {"pooled_rmse": 2.9517, "env_rmse_mean_2022_metric": 2.8497, "mae": 2.0354, "bias": -0.9707, "rmse": 2.3829},
+  "recent_mean": {"pooled_rmse": 3.1882, "env_rmse_mean_2022_metric": 3.0862}
+ }
+}
