@@ -11,24 +11,29 @@ genotype-by-environment (GxE) idea is tested on its own and pre-registered befor
 
 ## Where the entry model stands (read 2026-11-10)
 
-The 2024 leaderboard is public (EvalAI challenge 2376): 64 entries, won at **0.4501**. MV2's adopted
-model M4 scores **0.3018** in this repository's harness, which would have placed it **40th of 64**. Third
-place, at **0.4377**, is "Model 2022 (not competing)", a public reference script by one of the
-organisers that uses only markers.
+The 2024 leaderboard is public (EvalAI challenge 2376): 64 entries, won at **0.4501**. Third place, at
+**0.4377**, is "Model 2022 (not competing)", a public reference script by one of the organisers that
+uses only markers.
+
+**The default 2026 entry is now a 50/50 mix of two models (g2f-switch 0.1.0, graded, 6 of 6 held).**
+M4 (marker ridge plus parent combining ability, shrunk to each hybrid's own mean) and "full" (MV2's
+re-implementation of the organisers' Gaussian-kernel model) are z-scored inside each environment and
+averaged. The weights were chosen on 2022 and checked forward on 2024:
+
+| | M4 | full | mix (0.5, 0.5) |
+|---|---|---|---|
+| 2022 | 0.326 | 0.299 | **0.362** |
+| 2024 | 0.302 | **0.442** | 0.433 (would have placed 6th of 64) |
+
+The mix beats both single models in five of six hybrid-category cells. The exception is 2024's new
+hybrids with one parent seen, where full alone is better. The study is rerun on the 2026 release
+before any upload.
 
 **The harness is confirmed by the organisers' own code (g2f-refmodel 0.1.2, graded, 5 of 5 held).**
 Their reference script, run unmodified under bWGR 2.2.13 (the release current during the 2024
 competition), scores **0.4377** here, its leaderboard figure. Under the current bWGR 2.2.18 it stops
 before fitting because its training table ends up empty; the diagnostics point to the hybrid row
 names being lost on the marker matrix, and a small sealed job checks which bWGR helper drops them.
-
-**MV2's re-implementation of that reference model ("full") scores 0.4416 on 2024 (would have placed
-3rd; it agrees with the script's own predictions at r = 0.997) but loses to M4 on 2022 (0.299 vs
-0.326) and 2023 (0.389 vs 0.435).** g2f-refmodel 0.1.1 (graded, gate and 3 of 3 predictions held)
-shows where each one wins. full ranks new hybrids with one parent seen better in both seasons (2022:
-0.167 vs 0.144; 2024: 0.390 vs 0.107). M4 is far better on 2022's new hybrids with both parents seen
-(0.430 vs 0.304). **g2f-switch 0.1.0** (pre-registered; sealed job running) mixes the two by kind of
-hybrid, choosing the weights on 2022 and checking them on 2024. Its result sets the default 2026 entry.
 
 **The 2026 test season starts a new hybrid set.** G2F grows each set of hybrids for two seasons. In
 odd seasons since 2017, 78-99.8% of test pairs were hybrids grown before; in even seasons, only
@@ -45,6 +50,8 @@ validates and scores exactly M4's 0.3018 in every environment. It also shows tha
 by error (as 2022 was, by RMSE), the environment level dominates: the site-history levels miss each
 2024 environment's mean by 2.0 Mg/ha on average, mostly too low, while the hybrid ranking lowers the
 RMSE by only 0.05 Mg/ha. The 2026 metric is read when the training data are released (2026-11-16).
+**g2f-predict 0.1.0** (pre-registered; sealed dry run queued) builds M4, full and mix upload files for
+any release layout in one step, and never downloads data on its own.
 
 ## Results so far
 
@@ -58,11 +65,11 @@ RMSE by only 0.05 Mg/ha. The 2026 metric is read when the training data are rele
 | g2f-parentloc 0.1.0 | graded: 3 of 5 predictions held, H1 failed; **not adopted** | parent-by-location offset (k=20) 0.286 (**-0.0156** below M4; helps 2022/2023 but not the 2024 hold-out) |
 | g2f-ecreaction 0.1.0 | graded: 2 of 5 predictions held, H1 failed; **not adopted** | marker-by-covariate reaction norm: real within-env signal (spread 54% of M4's) but every positive weight hurts, so alpha*=0 and M7=M4 (0.302) |
 | g2f-gcablend 0.1.0 | graded: all 3 predictions held, H1 failed; **keep a-priori 0.5** | tuning M4's blend weight on 2022+2023 picks w*=0.25, scoring 0.293 on 2024 (**-0.009** below the a-priori 0.5's 0.302); on 2024 the grid peaks at w=0.75 (0.3033) |
-| g2f-refmodel 0.1.0 | graded: G1/G2 not run (reference did not start); P1, P5, P6 held, P3 held but uninformative, P2, P4 failed; H1 failed, **M4 kept for now** | **re-implemented reference 0.4416 (3rd of 64)**; new hybrids 0.377; but 2022 0.299 and 2023 0.389, below M4 |
+| g2f-refmodel 0.1.0 | graded: G1/G2 not run (reference did not start); P1, P5, P6 held, P3 held but uninformative, P2, P4 failed; H1 failed, M4 kept at the time | **re-implemented reference 0.4416 (3rd of 64)**; new hybrids 0.377; but 2022 0.299 and 2023 0.389, below M4 |
 | g2f-refmodel 0.1.1 | graded: **S1, P7, P8, P9 held**; G1, G2, P10 not graded (the reference stopped inside bWGR's `mm()`) | full by category: seen 0.576, new_both 0.290, new_one 0.390 (M4 0.107); its global marker effect adds nothing in any category |
 | g2f-cathistory 0.1.0 | graded: **6 of 8 held** (H1 failed: 2016 had 23.7% new_none pairs; H6 96.7% vs 99%) | per-season categories 2015-2024; all 19 named 2026 checks grown before; parent table for the 2026 template |
 | g2f-refmodel 0.1.2 | graded: **all 5 held (P11, G1, G2, P10, P12)** | the organisers' script under bWGR 2.2.13: **0.4377, its leaderboard score** (harness confirmed); full vs script 0.0039 apart, predictions r = 0.997; fails under bWGR 2.2.18 |
-| g2f-switch 0.1.0 | **pre-registered** (2026-11-09); sealed job running | M4 and full mixed by kind of hybrid, weights chosen on 2022, forward check on 2024 (R1, Q1-Q5); sets the 2026 default |
+| g2f-switch 0.1.0 | graded: **all 6 held (R1, Q1-Q5)**; **adopted as the 2026 default** | mix a = b = 0.5: **0.433** (2022: 0.362, best of all three); hindsight best on 2024 0.462 (a = 1, b = 0.5), reported, not claimed |
 
 Tools for the 2026 season (training data released 2026-11-16):
 
@@ -71,7 +78,8 @@ Tools for the 2026 season (training data released 2026-11-16):
 | g2f-release-census 0.1.0 | **checked on the 2024 release**: 9 of 10 tool checks held (C8 was a definition: it counts all 5,899 genotype rows, not the 5,897 left after the baseline's filter), all 6 data-note counts and both predictions held | names, counts and shapes of a release's files, checked against registered expectations, before any modelling |
 | g2f-entry 0.1.0 | **checked on the 2024 release: all 6 dry-run checks held** (score 0.3018 reproduced from the written file; 5 of 5 broken files rejected; 2024 called a new-hybrid year, 6.8% of pairs grown in 2023) | locates the template, measures the share of test rows whose hybrid was grown before (`seen`), writes and validates an upload file, and scores a dry run |
 | g2f-entry 0.2.0 | **checked on the 2024 release: all 5 checks held** (score unchanged to 6e-8 per environment; RMSE 2.90 Mg/ha vs 2.95 for the level alone and 3.19 for one constant) | `mgha`: turns scale-free predictions into Mg/ha per environment (site history for the level, 0.30 x the typical hybrid spread), leaving every within-environment r unchanged |
-| g2f-switch 0.1.0 `apply` | tested on synthetic tables; graded study running | mixes two prediction columns by hybrid category for a real upload (then `g2f_entry.py mgha`) |
+| g2f-switch 0.1.0 `apply` | study graded (6 of 6) | mixes two prediction columns by hybrid category for a real upload (then `g2f_entry.py mgha`) |
+| g2f-predict 0.1.0 | **pre-registered** (2026-11-10); dry run on the 2024 release queued (P1-P5) | `plan` and `predict` for any release layout: M4, full and the mix, each as a validated Mg/ha upload file; never downloads |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -87,6 +95,7 @@ Four different ways of adding environment-specific structure on top of M4 each g
 on the 2024 hold-out, and tuning M4's blend weight on the training years made it worse. The organisers'
 Gaussian-kernel model, re-implemented here, is the first model in this repository to change the 2024
 picture (0.302 to 0.442), almost entirely on new hybrids, yet it loses to M4 on both earlier seasons.
+Averaging the two (g2f-switch) is the first model to beat both on 2022 and stay close to the best on 2024.
 See the result files in [`docs/`](docs/).
 
 ## Files
@@ -127,8 +136,11 @@ See the result files in [`docs/`](docs/).
   re-implementation by hybrid category (`split`).
 - `dimcheck.R`: records whether bWGR's `IMP`, `EigenGAU` and `K2X` keep a toy marker matrix's row
   names, under a given bWGR release (follow-up to g2f-refmodel 0.1.2).
-- `docs/g2f-switch-0.1.0-prereg.md`, `g2f_switch.py`, `test_g2f_switch.py`: M4 and full mixed by hybrid
-  category (`grade`), and the same mix for any prediction table (`apply`) (numpy + pandas).
+- `docs/g2f-switch-0.1.0-prereg.md`, `docs/g2f-switch-0.1.0-result.md`, `g2f_switch.py`,
+  `test_g2f_switch.py`: M4 and full mixed by hybrid category (`grade`), and the same mix for any
+  prediction table (`apply`) (numpy + pandas).
+- `docs/g2f-predict-0.1.0.md`, `g2f_predict.py`, `test_g2f_predict.py`,
+  `data/g2f-predict-expect-2024.json`: release-day entry builder (`plan`, `predict`) and its 2024 dry run.
 - `docs/g2f-release-census-0.1.0.md`, `docs/g2f-release-census-0.1.0-result.md`,
   `g2f_release_census.py`, `test_g2f_release_census.py`, `data/g2f-release-census-expect-2024.json`:
   release census (standard library only) and its dry run on the 2024 release.
@@ -142,13 +154,13 @@ See the result files in [`docs/`](docs/).
 - `results/`: outputs of the sealed runs that each result grades (`g2f_baseline.json`,
   `g2f_envkernel.json`, `g2f_checkhybrid.json`, `g2f_parentgca.json`, `g2f_newshrink.json`,
   `g2f_parentloc.json`, `g2f_ecreaction.json`, `g2f_gcablend.json`, `g2f_refmodel.json`,
-  `g2f_refsplit.json`, `g2f_refr0.json`, `g2f_cathistory.json`, `g2f_parents_2014_2024.csv`,
-  `g2f_release_census_2024.json`, `g2f_entry_dryrun_2024.json`, `g2f_entry_mgha_2024.json`,
-  per-environment r and per-row prediction tables).
+  `g2f_refsplit.json`, `g2f_refr0.json`, `g2f_switch.json`, `g2f_cathistory.json`,
+  `g2f_parents_2014_2024.csv`, `g2f_release_census_2024.json`, `g2f_entry_dryrun_2024.json`,
+  `g2f_entry_mgha_2024.json`, per-environment r and per-row prediction tables).
 
 ```
 pip install numpy pandas
-python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck test_g2f_switch test_g2f_release_census test_g2f_cathistory test_g2f_entry
+python -m unittest -v test_g2f_baseline test_g2f_envkernel test_g2f_checkhybrid test_g2f_parentgca test_g2f_newshrink test_g2f_parentloc test_g2f_ecreaction test_g2f_gcablend test_g2f_refmodel test_g2f_refcheck test_g2f_switch test_g2f_release_census test_g2f_cathistory test_g2f_entry test_g2f_predict
 python g2f_baseline.py --data-dir data --out-dir results
 python g2f_envkernel.py --data-dir data --out-dir results
 python g2f_checkhybrid.py --out-dir results
@@ -170,7 +182,10 @@ python g2f_release_census.py --data-dir data --out-dir results --expect data/g2f
 python g2f_cathistory.py --data-dir data --out-dir results
 python g2f_entry.py dryrun --data-dir data --out-dir results --pred results/g2f_parentgca_2024_predictions.csv --col M4 --expect data/g2f-entry-expect-2024.json --name g2f_entry_dryrun_2024
 python g2f_entry.py dryrun-mgha --data-dir data --out-dir results --pred results/g2f_parentgca_2024_predictions.csv --col M4 --expect data/g2f-entry-mgha-expect-2024.json --name g2f_entry_mgha_2024
-# a real upload: mix two models by hybrid category, then predictions on any scale -> Mg/ha file, validated against the template
+# release day: list what a release holds, then build M4 / full / mix upload files in Mg/ha (validated)
+python g2f_predict.py plan --data-dir <release folder> --out-dir results
+python g2f_predict.py predict --data-dir <release folder> --out-dir results --full <preds/<season>.csv from g2f_refmodel.R> [--a 0.5 --b 0.5]
+# or by hand: mix two models by hybrid category, then predictions on any scale -> Mg/ha file
 python g2f_switch.py apply --pred <table with M4 and full columns> --trait <trait csv> --a <a> --b <b> --out mix.csv
 python g2f_entry.py mgha --trait <trait csv> --template <template csv> --pred mix.csv --col mix --out submission.csv
 ```

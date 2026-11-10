@@ -1,0 +1,10 @@
+{
+ "season": 2024,
+ "roles": ["trait", "template", "geno_numeric", "observed"],
+ "M4": 0.3018,
+ "mix": 0.4330,
+ "tol": 0.0005,
+ "file_tol": 0.0002,
+ "envs": 22,
+ "report_only": {"full": 0.4416}
+}
