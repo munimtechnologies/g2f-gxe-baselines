@@ -1,0 +1,57 @@
+{
+ "agreement_ref_full": {
+  "envs": 23,
+  "mean_r": 0.9966
+ },
+ "env_r": {
+  "DEH1_2024": 0.5111,
+  "GAH1_2024": 0.2685,
+  "GAH2_2024": 0.4003,
+  "IAH2_2024": 0.3657,
+  "IAH4_2024": 0.5957,
+  "ILH1_2024": 0.3819,
+  "INH1_2024": 0.5331,
+  "MIH1_2024": 0.4721,
+  "MNH1_2024": 0.4402,
+  "MOH1_2024": 0.5469,
+  "NCH1_2024": 0.5846,
+  "NEH1_2024": 0.5256,
+  "NEH2_2024": 0.2583,
+  "NEH3_2024": 0.4091,
+  "NYH2_2024": 0.4575,
+  "NYH3_2024": 0.2858,
+  "OHH1_2024": 0.5128,
+  "ONH3_2024": 0.4212,
+  "TXH1_2024": 0.3901,
+  "WIH1_2024": 0.517,
+  "WIH2_2024": 0.3598,
+  "WIH3_2024": 0.3911
+ },
+ "envs_scored": 22,
+ "grading": {
+  "G1_harness_matches_leaderboard": {
+   "held": true,
+   "value": 0.0
+  },
+  "G2_reimplementation_matches_reference": {
+   "held": true,
+   "value": 0.0039
+  },
+  "P10_reference_and_full_agree_0.99": {
+   "held": true,
+   "value": 0.9966
+  }
+ },
+ "leaderboard_place": 3,
+ "ref_template_rows_without_prediction": 0,
+ "reference_ran": true,
+ "reference_script_sha256": "b55c5fa79ba80eb5363af9eba88df369f48b6b97fab18a4ee1038d4f18d1359b",
+ "score": {
+  "full": 0.4416,
+  "ref": 0.4377,
+  "ref_new": 0.377,
+  "ref_seen": 0.5646
+ },
+ "study": "g2f-refmodel-0.1.1 r0",
+ "version": "0.1.1"
+}

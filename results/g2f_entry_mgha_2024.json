@@ -1,0 +1,232 @@
+{
+ "env_r_max_abs_diff": 6.335484381558842e-08,
+ "env_r_sets_equal": true,
+ "env_rmse_mean_2022_metric": {
+  "level_only": {
+   "envs": 22,
+   "mean_rmse": 2.8497
+  },
+  "mgha": {
+   "envs": 22,
+   "mean_rmse": 2.7989
+  },
+  "recent_mean": {
+   "envs": 22,
+   "mean_rmse": 3.0862
+  }
+ },
+ "expect": {
+  "E1_mgha_validates_without_warnings": {
+   "held": true,
+   "value": {
+    "errors": 0,
+    "range": [
+     0.5,
+     13.191
+    ],
+    "warnings": 0
+   }
+  },
+  "E2_score_unchanged": {
+   "held": true,
+   "value": {
+    "envs": 22,
+    "mgha": 0.3018,
+    "raw": 0.3018
+   }
+  },
+  "E3_every_env_r_unchanged": {
+   "held": true,
+   "value": 6.335484381558842e-08
+  },
+  "E4_rmse_below_level_only": {
+   "held": true,
+   "value": {
+    "level_only": 2.9517,
+    "mgha": 2.9016
+   }
+  },
+  "E5_location_level_beats_recent_mean": {
+   "held": true,
+   "value": {
+    "level_only": 2.9517,
+    "recent_mean": 3.1882
+   }
+  }
+ },
+ "expect_held": 5,
+ "expect_total": 5,
+ "level_error_by_env": {
+  "DEH1_2024": 1.9337,
+  "GAH1_2024": 1.5627,
+  "GAH2_2024": -0.1706,
+  "IAH2_2024": 1.3,
+  "IAH4_2024": -1.8656,
+  "ILH1_2024": 0.5321,
+  "INH1_2024": -0.6571,
+  "MIH1_2024": -2.5494,
+  "MNH1_2024": -2.701,
+  "MOH1_2024": -3.7412,
+  "NCH1_2024": -0.2405,
+  "NEH1_2024": -2.0527,
+  "NEH2_2024": 2.2168,
+  "NEH3_2024": -5.2867,
+  "NYH2_2024": -3.5919,
+  "NYH3_2024": 1.3567,
+  "OHH1_2024": -3.5719,
+  "ONH3_2024": -3.0447,
+  "TXH1_2024": 1.5453,
+  "WIH1_2024": -2.3913,
+  "WIH2_2024": -1.2031,
+  "WIH3_2024": 1.2641
+ },
+ "level_mean_abs_error": 2.0354,
+ "observed_within_env_sd_median": 1.8594,
+ "plan": {
+  "envs_from_location": 22,
+  "envs_total": 23,
+  "fallback": 9.6729,
+  "levels": {
+   "DEH1_2024": 10.6322,
+   "GAH1_2024": 7.4634,
+   "GAH2_2024": 9.3252,
+   "IAH2_2024": 10.6924,
+   "IAH4_2024": 11.3072,
+   "ILH1_2024": 11.1526,
+   "INH1_2024": 11.1943,
+   "MIH1_2024": 9.9237,
+   "MNH1_2024": 9.6697,
+   "MOH1_2024": 7.519,
+   "NCH1_2024": 8.5514,
+   "NEH1_2024": 7.3342,
+   "NEH2_2024": 8.5728,
+   "NEH3_2024": 8.7821,
+   "NYH2_2024": 9.7598,
+   "NYH3_2024": 10.3085,
+   "OHH1_2024": 11.0951,
+   "ONH3_2024": 9.6729,
+   "SCH1_2024": 4.5252,
+   "TXH1_2024": 8.4044,
+   "WIH1_2024": 11.5123,
+   "WIH2_2024": 10.5889,
+   "WIH3_2024": 11.8572
+  },
+  "median_sd": 1.7614,
+  "recent_years": [
+   2021,
+   2022,
+   2023
+  ],
+  "sd_envs": 82,
+  "shrink": 0.3,
+  "spread": 0.5284
+ },
+ "predictions": {
+  "column": "M4",
+  "pairs": 10057,
+  "source": "https://raw.githubusercontent.com/munimtechnologies/g2f-gxe-baselines/main/results/g2f_parentgca_2024_predictions.csv"
+ },
+ "release": {
+  "observed": "7_Testing_Observed_Values.csv",
+  "template": "1_Submission_Template_2024.csv",
+  "trait": "1_Training_Trait_Data_2014_2023.csv"
+ },
+ "rescale": {
+  "envs": 23,
+  "envs_without_plan": [],
+  "spread_shrunk_envs": [
+   "SCH1_2024"
+  ]
+ },
+ "rmse": {
+  "level_only": {
+   "pairs": 9486,
+   "rmse": 2.9517
+  },
+  "mgha": {
+   "pairs": 9486,
+   "rmse": 2.9016
+  },
+  "recent_mean": {
+   "pairs": 9486,
+   "rmse": 3.1882
+  }
+ },
+ "score_mgha": {
+  "env_r": {
+   "DEH1_2024": 0.1837,
+   "GAH1_2024": 0.1832,
+   "GAH2_2024": 0.2865,
+   "IAH2_2024": 0.1641,
+   "IAH4_2024": 0.364,
+   "ILH1_2024": 0.3422,
+   "INH1_2024": 0.4194,
+   "MIH1_2024": 0.3776,
+   "MNH1_2024": 0.4612,
+   "MOH1_2024": 0.3096,
+   "NCH1_2024": 0.2512,
+   "NEH1_2024": 0.3779,
+   "NEH2_2024": 0.2234,
+   "NEH3_2024": 0.417,
+   "NYH2_2024": 0.3453,
+   "NYH3_2024": 0.1534,
+   "OHH1_2024": 0.451,
+   "ONH3_2024": 0.2836,
+   "TXH1_2024": 0.1894,
+   "WIH1_2024": 0.3699,
+   "WIH2_2024": 0.2495,
+   "WIH3_2024": 0.2376
+  },
+  "envs": 22,
+  "mean_r": 0.3018,
+  "pairs_scored": 9486
+ },
+ "score_raw": {
+  "env_r": {
+   "DEH1_2024": 0.1837,
+   "GAH1_2024": 0.1832,
+   "GAH2_2024": 0.2865,
+   "IAH2_2024": 0.1641,
+   "IAH4_2024": 0.364,
+   "ILH1_2024": 0.3422,
+   "INH1_2024": 0.4194,
+   "MIH1_2024": 0.3776,
+   "MNH1_2024": 0.4612,
+   "MOH1_2024": 0.3096,
+   "NCH1_2024": 0.2512,
+   "NEH1_2024": 0.3779,
+   "NEH2_2024": 0.2234,
+   "NEH3_2024": 0.417,
+   "NYH2_2024": 0.3453,
+   "NYH3_2024": 0.1534,
+   "OHH1_2024": 0.451,
+   "ONH3_2024": 0.2836,
+   "TXH1_2024": 0.1894,
+   "WIH1_2024": 0.3699,
+   "WIH2_2024": 0.2495,
+   "WIH3_2024": 0.2376
+  },
+  "envs": 22,
+  "mean_r": 0.3018,
+  "pairs_scored": 9486
+ },
+ "study": "g2f-entry-0.2.0-mgha",
+ "validate": {
+  "envs": 23,
+  "errors": [],
+  "ok": true,
+  "range": [
+   0.5,
+   13.191
+  ],
+  "rows": 10057,
+  "template_rows": 10057,
+  "warnings": []
+ },
+ "version": "0.2.0",
+ "write": {
+  "filled_by_env_mean": 0,
+  "missing_predictions": 0,
+  "rows": 10057
+ }
+}
