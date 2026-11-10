@@ -1,0 +1,32 @@
+{
+ "floor": 1.2,
+ "gain_bar": 0.15,
+ "repro": {
+  "2022": {
+   "recent_mean": 3.3957,
+   "site_all": 2.6506,
+   "site_anomaly": 2.7069,
+   "site_anomaly_shrunk": 2.8371,
+   "site_anomaly_trend": 2.8272,
+   "site_recent3": 2.7166
+  },
+  "2023": {
+   "recent_mean": 2.6694,
+   "site_all": 1.7199,
+   "site_anomaly": 1.6857,
+   "site_anomaly_shrunk": 1.8174,
+   "site_anomaly_trend": 1.5998,
+   "site_recent3": 1.8262
+  },
+  "2024": {
+   "recent_mean": 2.7088,
+   "site_all": 2.3831,
+   "site_anomaly": 2.2141,
+   "site_anomaly_shrunk": 2.2326,
+   "site_anomaly_trend": 2.1262,
+   "site_recent3": 1.9662
+  }
+ },
+ "targets": [2019, 2020, 2021, 2022, 2023, 2024],
+ "tol": 0.0001
+}
