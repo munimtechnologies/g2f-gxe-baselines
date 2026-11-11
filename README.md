@@ -33,7 +33,8 @@ it must reproduce g2f-switch's choice. Its first sealed dry run stopped at a bug
 pandas 3.1, before any data were scored; the helper is fixed and the same run is queued again with the
 tool and its registered checks unchanged (docs/g2f-refold-0.1.0-rerun.md). The order in which
 candidate files would be uploaded in 2026 is fixed in advance, before any 2026 data exist
-(docs/g2f-2026-portfolio-0.1.0.md, provisional until the 2026 rules are read).
+(docs/g2f-2026-portfolio-0.1.0.md, provisional until the 2026 rules are read), and what the 2026
+release itself should look like is predicted before it exists (docs/g2f-2026-release-0.1.0.md).
 
 **The kernel model is ready for a renamed release (g2f-refmodel 0.2.1, plan regression 4 of 4 held).**
 It finds the release files by role, `plan` lists exactly the folds that `all` will fit, and an optional
@@ -64,15 +65,18 @@ that if a round is scored by error (as 2022 was, by RMSE), the environment level
 site-history levels miss each 2024 environment's mean by 2.0 Mg/ha on average, mostly too low, while
 the hybrid ranking lowers the RMSE by only 0.05 Mg/ha.
 
-**Simple yield-level rules do not beat site history reliably (g2f-level 0.1.0, graded, 3 of 6 held).**
-Six rules for each environment's level (site history, the site's last 3 seasons, one recent constant,
-site anomalies, shrunk anomalies, anomalies on a yield trend) were chosen on the 2022 and 2023 folds.
-The folds kept site history (2.19 Mg/ha level RMSE), so the entry's levels are unchanged. Each of the
-three seasons scored so far had a different best rule, no rule came within 1.9 Mg/ha of 2024's
-environment means, and every rule was too low in that high-yield season. **g2f-levelmeta 0.1.0**
-(pre-registered 2026-11-10; sealed run queued) replays the choice on every season from 2019 to 2024 to
-decide how many past seasons should choose the 2026 level rule. All of this matters only if 2026 is
-scored by error; the 2026 metric is read when the training data are released (2026-11-16).
+**History cannot find a season's yield level (g2f-level 0.1.0, 3 of 6 held; g2f-levelmeta 0.1.0, 5 of 5
+held).** Six rules for each environment's level (site history, the site's last 3 seasons, one recent
+constant, site anomalies, shrunk anomalies, anomalies on a yield trend) were scored on every season from
+2015 to 2024, each built from earlier seasons only. The best rule of each season still missed the
+environment means by 1.60-2.65 Mg/ha, and the best rule changed from season to season. Replaying the
+choice of rule on six target seasons (2019-2024), choosing on the 4 most recent seasons scored 2.159
+Mg/ha, against 2.184 for all seasons, 2.189 for plain site history and 2.289 for the last two seasons.
+By the pre-registered rule, **if 2026 is scored by error, its level rule is chosen with
+`g2f_level.py choose --folds 4`**, but the 0.03 Mg/ha edge over site history is inside the noise
+(docs/g2f-levelmeta-0.1.0-result.md). Any real gain would have to come from in-season weather data. None
+of this matters if 2026 is scored by within-environment r, as 2024 was; the 2026 metric is read when the
+training data are released (2026-11-16).
 
 ## Results so far
 
@@ -94,6 +98,7 @@ scored by error; the 2026 metric is read when the training data are released (20
 | g2f-refmodel 0.2.0 check | regression 2 of 3 (K1 was a check/plan mismatch, fixed in 0.2.1); row-name check done | test fold reproduces **0.4416**; bWGR `IMP` drops row names in 2.2.18, keeps them in 2.2.13 |
 | g2f-refmodel 0.2.1 check | regression **4 of 4 held (K1, K2, K4, K5)** | not a score: `plan` lists the folds `all` fits (2024 release: 2023, 2022; `plan 4`: 2023-2020; `plan 0`: none) and finds renamed 2026-style files |
 | g2f-level 0.1.0 | graded: **3 of 6 held** (L1, L4, L5); L2, L3, L6 failed; **site history kept** | not an r study: environment level RMSE on 2024, chosen site_all 2.38 Mg/ha; hindsight best site_recent3 1.97, reported, not claimed |
+| g2f-levelmeta 0.1.0 | graded: **all 5 held (M1-M5)**; **decision k=4** (only for an error metric) | not an r study: mean level RMSE over 2019-2024: choose on 4 seasons 2.159, all 2.184, fixed site_all 2.189, 1 season 2.230, 2 seasons 2.289 Mg/ha |
 
 Tools for the 2026 season (training data released 2026-11-16):
 
@@ -106,8 +111,8 @@ Tools for the 2026 season (training data released 2026-11-16):
 | g2f-predict 0.1.0 | **checked on the 2024 release: all 5 held** (M4 0.3018 and mix 0.4330 reproduced; 3 of 3 files valid, 10,057 rows; file scores equal column scores) | `plan` and `predict` for any release layout: M4, full and the mix, each as a validated Mg/ha upload file; never downloads |
 | g2f-refmodel 0.2.1 (R) | **plan checked: 4 of 4 held** | the kernel ("full") model for any release layout: `plan` lists files and folds, `all` fits the test season and the chosen number of hold-out seasons |
 | g2f-refold 0.1.0 | **pre-registered** (2026-11-10); dry run v1 stopped at a test-helper bug (pandas 3.1), nothing scored; rerun v2 queued with the same checks (D1-D6) | `choose`: types the test season and each hold-out season (new vs repeated hybrids) and picks the mix weights (a, b) on the hold-out seasons of the test season's type, for any release |
-| g2f-level 0.1.0 | **checked on the 2024 release** (L1 reproduction held; 3 of 6 in all) | `choose`: six rules for each test environment's yield level, chosen on hold-out seasons by level RMSE; `entry_plan` hands the chosen levels to `g2f_entry.rescale` (standard library only) |
-| g2f-levelmeta 0.1.0 | **pre-registered** (2026-11-10); run on the 2024 release queued (M1-M5) | replays g2f-level's choice season by season with 1, 2, 4 or all earlier seasons and applies the pre-registered decision for 2026 (standard library only) |
+| g2f-level 0.1.0 | **checked on the 2024 release** (L1 reproduction held; 3 of 6 in all); 9-fold run reproduces it (levelmeta M1) | `choose`: six rules for each test environment's yield level, chosen on hold-out seasons by level RMSE; `entry_plan` hands the chosen levels to `g2f_entry.rescale` (standard library only) |
+| g2f-levelmeta 0.1.0 | **checked on the 2024 release: all 5 held**; decided `--folds 4` for an error-scored 2026 (runner-up `--folds 99`) | replays g2f-level's choice season by season with 1, 2, 4 or all earlier seasons and applies the pre-registered decision for 2026 (standard library only) |
 
 Most of the 2024 score comes from the 12% of rows that are hybrids grown in earlier years. A model that
 knows nothing about new hybrids (M0) still reaches 0.235, 84% of M2's 0.280. Markers rank new hybrids
@@ -177,13 +182,17 @@ See the result files in [`docs/`](docs/).
   `data/g2f-refold-expect-2024.json`: re-chooses the mix weights on the hold-out seasons that match the
   test season's type, for any release; the rerun note explains the test-helper fix.
 - `docs/g2f-2026-portfolio-0.1.0.md`: the provisional, pre-registered upload order for 2026.
+- `docs/g2f-2026-release-0.1.0.md`: pre-registered predictions of what the 2026 training release holds
+  (layout, share of new hybrids, matched folds, checks, size, hybrids with neither parent seen), written
+  before the release exists and graded by hand on release day.
 - `docs/g2f-level-0.1.0.md`, `docs/g2f-level-0.1.0-result.md`, `g2f_level.py`, `test_g2f_level.py`,
   `data/g2f-level-expect-2024.json`: chooses each test environment's yield level (Mg/ha) from six fixed
   rules on hold-out seasons, for an error-scored round, and its graded 2024 dry run (standard library
   only).
-- `docs/g2f-levelmeta-0.1.0.md`, `g2f_levelmeta.py`, `test_g2f_levelmeta.py`,
-  `data/g2f-levelmeta-expect-2024.json`: replays g2f-level's choice season by season to decide how many
-  past seasons choose the level rule (standard library only).
+- `docs/g2f-levelmeta-0.1.0.md`, `docs/g2f-levelmeta-0.1.0-result.md`, `g2f_levelmeta.py`,
+  `test_g2f_levelmeta.py`, `data/g2f-levelmeta-expect-2024.json`: replays g2f-level's choice season by
+  season to decide how many past seasons choose the level rule, and its graded 2024 run (standard library
+  only).
 - `docs/g2f-release-census-0.1.0.md`, `docs/g2f-release-census-0.1.0-result.md`,
   `g2f_release_census.py`, `test_g2f_release_census.py`, `data/g2f-release-census-expect-2024.json`:
   release census (standard library only) and its dry run on the 2024 release.
@@ -201,7 +210,8 @@ See the result files in [`docs/`](docs/).
   `g2f_parents_2014_2024.csv`, `g2f_release_census_2024.json`, `g2f_entry_dryrun_2024.json`,
   `g2f_entry_mgha_2024.json`, `g2f_predict_2024.json`, `g2f_predict_plan.json`,
   `g2f_refmodel_regress.json`, `g2f_refmodel_plan_regress.json`, `dimcheck_2.2.13.json`,
-  `dimcheck_2.2.18.json`, `g2f_level_2024.json`, per-environment r and per-row prediction tables).
+  `dimcheck_2.2.18.json`, `g2f_level_2024.json`, `g2f_level_folds9_2024.json`,
+  `g2f_levelmeta_2024.json`, per-environment r and per-row prediction tables).
 
 ```
 pip install numpy pandas
@@ -238,8 +248,9 @@ Rscript g2f_refmodel.R <release folder> <out> plan 4
 Rscript g2f_refmodel.R <release folder> <out> all 4
 python g2f_refold.py choose --data-dir <release folder> --out-dir results --full-dir <out>/preds --folds 4
 python g2f_predict.py predict --data-dir <release folder> --out-dir results --full <out>/preds/<season>.csv [--a 0.5 --b 0.5]
-# if the round is scored by error: choose the level rule on the release's own hold-out seasons
-python g2f_level.py choose --data-dir <release folder> --out-dir results [--folds 2]
+# only if the round is scored by error: the level rule is chosen on the release's 4 most recent
+# training seasons (g2f-levelmeta 0.1.0 decision; runner-up --folds 99)
+python g2f_level.py choose --data-dir <release folder> --out-dir results --folds 4
 # or by hand: mix two models by hybrid category, then predictions on any scale -> Mg/ha file
 python g2f_switch.py apply --pred <table with M4 and full columns> --trait <trait csv> --a <a> --b <b> --out mix.csv
 python g2f_entry.py mgha --trait <trait csv> --template <template csv> --pred mix.csv --col mix --out submission.csv
