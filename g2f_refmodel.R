@@ -1,29 +1,51 @@
 # Apache-2.0. Made by MV2 of Munim, Inc. with AI agents.
-# g2f-refmodel 0.1.0 (docs/g2f-refmodel-0.1.0-prereg.md): MV2's own re-implementation, written from a
-# step-by-step description, of the public reference model that a G2F organiser posted to the 2024
-# leaderboard as "Model 2022 (not competing)" (github.com/alenxav/Lectures, G2F_GxE_2024/script_model.R;
-# that script is not copied here). Uses the bWGR package (GPL-3, CRAN) and reshape2 (CRAN).
+# g2f-refmodel 0.2.1 (docs/g2f-refmodel-0.1.0-prereg.md; 0.2.0 added release discovery; 0.2.1 lets `plan`
+# list the hold-out folds that `all` would fit, and adds an optional hold-out count): MV2's own
+# re-implementation, written from a step-by-step description, of the public reference model that a G2F
+# organiser posted to the 2024 leaderboard as "Model 2022 (not competing)" (github.com/alenxav/Lectures,
+# G2F_GxE_2024/script_model.R; that script is not copied here). Uses the bWGR package (GPL-3, CRAN) and
+# reshape2 (CRAN).
 # Variants per fold (prediction columns):
 #   full   = Gaussian-kernel covariates x (global marker effect B1 + state-specific effects B2)
 #   b1     = global marker effect only
 #   b2     = state-specific marker effects only
 #   allloc = full, trained on every location instead of only the test states
-# Folds: 2024 (released answers; train 2014-2023), 2023 and 2022 (train on earlier years only).
-# Usage: Rscript g2f_refmodel.R <data_dir> <out_dir>   -> <out_dir>/preds/<fold>.csv and <fold>_info.csv
-suppressMessages({
-  library(bWGR)
-  library(reshape2)
-})
-
+# Folds: the test season (named by the year in the template's file name; all training data), then the
+# n most recent training seasons (default 2), each trained on earlier seasons only. On the 2024 release
+# with the default these are 2024, 2023 and 2022, exactly as in 0.1.0.
+# Files: the 2024 release names are used when present in <data_dir>; otherwise the largest file anywhere
+# below <data_dir> whose name matches the role (trait_data*.csv, submission_template*.csv,
+# *_numerical.txt) is used, so a later release with new names needs no edit.
+# Usage: Rscript g2f_refmodel.R <data_dir> <out_dir> [all|test|plan] [n_holdouts]
+#   all (default) = every fold; test = the test season only; plan = print the files and the folds that
+#   `all` would fit, fit nothing (bWGR is not loaded).
+#   -> <out_dir>/preds/<fold>.csv and <fold>_info.csv, and <out_dir>/refmodel_plan.txt
 args <- commandArgs(trailingOnly = TRUE)
 data_dir <- if (length(args) >= 1) args[1] else "/data"
 out_dir <- if (length(args) >= 2) args[2] else "/out"
+mode <- if (length(args) >= 3) args[3] else "all"
+n_hold <- if (length(args) >= 4) as.integer(args[4]) else 2L
+if (!mode %in% c("all", "test", "plan")) stop("mode must be all, test or plan")
+if (is.na(n_hold) || n_hold < 0) stop("n_holdouts must be a whole number >= 0")
 pred_dir <- file.path(out_dir, "preds")
 dir.create(pred_dir, recursive = TRUE, showWarnings = FALSE)
 
 say <- function(...) {
   cat(format(Sys.time(), "%H:%M:%S"), ..., "\n")
   flush(stdout())
+}
+
+find_file <- function(default, pattern) {
+  p <- file.path(data_dir, default)
+  if (file.exists(p)) return(p)
+  hits <- list.files(data_dir, pattern = pattern, recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  if (!length(hits)) stop("no file matching ", pattern, " below ", data_dir)
+  hits[which.max(file.size(hits))]
+}
+
+name_year <- function(path) {
+  m <- regmatches(basename(path), regexpr("20[0-9]{2}", basename(path)))
+  if (length(m)) m else "test"
 }
 
 state_of <- function(env) substr(env, 1, 2)
@@ -105,22 +127,46 @@ fit_variants <- function(dta, pset, X, loc_filter = TRUE) {
   list(pred = out, info = info)
 }
 
-geno_file <- file.path(data_dir, "5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt")
-Z0 <- as.matrix(read.csv(geno_file, sep = "\t", skip = 1, row.names = 1))
-say("genotypes:", nrow(Z0), "hybrids x", ncol(Z0), "markers")
+geno_file <- find_file("5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt", "_numerical\\.txt$")
+trait_file <- find_file("1_Training_Trait_Data_2014_2023.csv", "trait_data.*\\.csv$")
+tmpl_file <- find_file("1_Submission_Template_2024.csv", "submission_template.*\\.csv$")
+test_name <- name_year(tmpl_file)
 
-trait <- read.csv(file.path(data_dir, "1_Training_Trait_Data_2014_2023.csv"), stringsAsFactors = FALSE)
+trait <- read.csv(trait_file, stringsAsFactors = FALSE)
 trait$Env <- trimws(trait$Env)
 trait$Hybrid <- trimws(trait$Hybrid)
 trait$Yield_Mg_ha <- suppressWarnings(as.numeric(trait$Yield_Mg_ha))
 trait$Yr <- year_of(trait)
 trait <- trait[!is.na(trait$Yield_Mg_ha) & !is.na(trait$Yr), ]
-tmpl <- read.csv(file.path(data_dir, "1_Submission_Template_2024.csv"), stringsAsFactors = FALSE)
+tmpl <- read.csv(tmpl_file, stringsAsFactors = FALSE)
 tmpl$Env <- trimws(tmpl$Env)
 tmpl$Hybrid <- trimws(tmpl$Hybrid)
 
-folds <- list("2024" = list(train = trait, pset = unique(tmpl[, c("Env", "Hybrid")])))
-for (y in c(2023L, 2022L)) {
+train_years <- sort(unique(trait$Yr), decreasing = TRUE)
+# never hold out the earliest season: nothing earlier to train on
+n_use <- max(0L, min(n_hold, length(train_years) - 1L))
+holdouts <- if (mode %in% c("all", "plan")) head(train_years, n_use) else integer(0)
+plan <- c(paste("version", "0.2.1"), paste("mode", mode),
+          paste("geno_file", geno_file), paste("trait_file", trait_file),
+          paste("template_file", tmpl_file), paste("test_fold", test_name),
+          paste("trait_rows", nrow(trait)), paste("trait_years", paste(range(trait$Yr), collapse = "-")),
+          paste("template_pairs", nrow(unique(tmpl[, c("Env", "Hybrid")]))),
+          paste("template_envs", length(unique(tmpl$Env))),
+          paste("holdout_folds", if (length(holdouts)) paste(holdouts, collapse = " ") else "none"))
+writeLines(plan, file.path(out_dir, "refmodel_plan.txt"))
+for (l in plan) say("plan:", l)
+if (mode == "plan") quit(save = "no", status = 0)
+
+suppressMessages({
+  library(bWGR)
+  library(reshape2)
+})
+Z0 <- as.matrix(read.csv(geno_file, sep = "\t", skip = 1, row.names = 1))
+say("genotypes:", nrow(Z0), "hybrids x", ncol(Z0), "markers")
+
+folds <- list()
+folds[[test_name]] <- list(train = trait, pset = unique(tmpl[, c("Env", "Hybrid")]))
+for (y in holdouts) {
   folds[[as.character(y)]] <- list(train = trait[trait$Yr < y, ],
                                    pset = unique(trait[trait$Yr == y, c("Env", "Hybrid")]))
 }

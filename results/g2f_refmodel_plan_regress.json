@@ -1,0 +1,73 @@
+{
+ "checks": {
+  "K1_plan_2024": {
+   "held": true
+  },
+  "K2_plan_sim_2026": {
+   "held": true
+  },
+  "K4_four_holdouts": {
+   "held": true
+  },
+  "K5_zero_holdouts": {
+   "held": true
+  }
+ },
+ "held": 4,
+ "plans": {
+  "plan0": {
+   "geno_file": "/data/5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+   "holdout_folds": "none",
+   "mode": "plan",
+   "template_envs": "23",
+   "template_file": "/data/1_Submission_Template_2024.csv",
+   "template_pairs": "10057",
+   "test_fold": "2024",
+   "trait_file": "/data/1_Training_Trait_Data_2014_2023.csv",
+   "trait_rows": "164921",
+   "trait_years": "2014-2023",
+   "version": "0.2.1"
+  },
+  "plan2024": {
+   "geno_file": "/data/5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+   "holdout_folds": "2023 2022",
+   "mode": "plan",
+   "template_envs": "23",
+   "template_file": "/data/1_Submission_Template_2024.csv",
+   "template_pairs": "10057",
+   "test_fold": "2024",
+   "trait_file": "/data/1_Training_Trait_Data_2014_2023.csv",
+   "trait_rows": "164921",
+   "trait_years": "2014-2023",
+   "version": "0.2.1"
+  },
+  "plan4": {
+   "geno_file": "/data/5_Genotype_Data_All_2014_2025_Hybrids_numerical.txt",
+   "holdout_folds": "2023 2022 2021 2020",
+   "mode": "plan",
+   "template_envs": "23",
+   "template_file": "/data/1_Submission_Template_2024.csv",
+   "template_pairs": "10057",
+   "test_fold": "2024",
+   "trait_file": "/data/1_Training_Trait_Data_2014_2023.csv",
+   "trait_rows": "164921",
+   "trait_years": "2014-2023",
+   "version": "0.2.1"
+  },
+  "sim": {
+   "geno_file": "/tmp/sim/Training_data/5_Genotype_Data_All_2014_2026_Hybrids_numerical.txt",
+   "holdout_folds": "2023 2022",
+   "mode": "plan",
+   "template_envs": "23",
+   "template_file": "/tmp/sim/Testing_data/1_Submission_Template_2026.csv",
+   "template_pairs": "10057",
+   "test_fold": "2026",
+   "trait_file": "/tmp/sim/Training_data/1_Training_Trait_Data_2014_2025.csv",
+   "trait_rows": "164921",
+   "trait_years": "2014-2023",
+   "version": "0.2.1"
+  }
+ },
+ "total": 4,
+ "version": "0.2.0"
+}

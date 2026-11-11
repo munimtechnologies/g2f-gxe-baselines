@@ -7,6 +7,10 @@ in 2023, share 0.25, so the test season is "new_hybrids" and the 2022 fold is th
 On the 2022 fold the fake M4 is a fixed pattern and full equals the observed yield, so only a = 1 scores
 r = 1. On the 2023 fold (every row a seen hybrid) M4 equals the yield and full is the pattern, so only
 b = 0 scores r = 1; ties go to the smaller a + b, then the smaller a.
+
+Test fix 1 (2026-11-11): the fake M4 no longer assigns an empty selection with .loc, which pandas 3.1
+refuses for an empty object Series ("Invalid value '[]' for dtype 'float64'"). Only this helper changed;
+g2f_refold.py and every expected value are unchanged.
 """
 import csv
 import os
@@ -14,6 +18,9 @@ import shutil
 import tempfile
 import unittest
 import urllib.request
+
+import numpy as np
+import pandas as pd
 
 import g2f_refold as rf
 
@@ -38,10 +45,12 @@ def write_csv(path, header, rows):
 
 
 def fake_m4(train, test):
+    """M4 = the fixed PATTERN on 2022 rows, the observed yield on every other row."""
     out = test.copy()
-    is22 = out["Env"].str.endswith("_2022")
-    out["M4"] = out["obs"].astype(float)
-    out.loc[is22, "M4"] = out.loc[is22, "Hybrid"].map(PATTERN)
+    is22 = out["Env"].astype(str).str.endswith("_2022").to_numpy(dtype=bool)
+    pattern = pd.to_numeric(out["Hybrid"].astype(str).map(PATTERN), errors="coerce").to_numpy(dtype=float)
+    obs = pd.to_numeric(out["obs"], errors="coerce").to_numpy(dtype=float)
+    out["M4"] = np.where(is22, pattern, obs)
     return out, {"lambda": 1.0, "train_rows": int(len(train)), "test_rows": int(len(test))}
 
 
@@ -76,6 +85,14 @@ class RefoldCase(unittest.TestCase):
 
     def run_both(self):
         return rf.run(self.data, full_paths={2022: self.p22, 2023: self.p23}, m4_fn=fake_m4)
+
+    def test_fake_m4_helper(self):
+        test = pd.DataFrame({"Env": ["A_2023", "B_2023"], "Hybrid": ["H4/T", "H6/T"], "obs": [9.0, 9.0]})
+        out, _info = fake_m4(test.iloc[:0], test)
+        self.assertEqual(list(out["M4"]), [9.0, 9.0])
+        test22 = pd.DataFrame({"Env": ["A_2022", "B_2022"], "Hybrid": ["H4/T", "H6/T"], "obs": [7.0, 6.0]})
+        out22, _info = fake_m4(test22.iloc[:0], test22)
+        self.assertEqual(list(out22["M4"]), [0.0, 1.0])
 
     def test_season_types(self):
         res = self.run_both()

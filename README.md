@@ -9,7 +9,7 @@ the mean Pearson r inside each environment. This repository sets an honest floor
 simple genomic models. They are scored on 2022, 2023 and the organisers' released 2024 answers. Each
 genotype-by-environment (GxE) idea is tested on its own and pre-registered before its sealed run.
 
-## Where the entry model stands (read 2026-11-10)
+## Where the entry model stands (read 2026-11-11)
 
 The 2024 leaderboard is public (EvalAI challenge 2376): 64 entries, won at **0.4501**. Third place, at
 **0.4377**, is "Model 2022 (not competing)", a public reference script by one of the organisers that
@@ -27,9 +27,17 @@ averaged. The weights were chosen on 2022 and checked forward on 2024:
 
 The mix beats both single models in five of six hybrid-category cells. The exception is 2024's new
 hybrids with one parent seen, where full alone is better. Before any upload, the weights are chosen
-again on the 2026 release by **g2f-refold 0.1.0** (pre-registered 2026-11-10; sealed dry run queued).
-It types the test season as new or repeated hybrids and chooses on the past seasons of the same type.
-On the 2024 release it must reproduce g2f-switch's choice.
+again on the 2026 release by **g2f-refold 0.1.0** (pre-registered 2026-11-10). It types the test
+season as new or repeated hybrids and chooses on the past seasons of the same type. On the 2024 release
+it must reproduce g2f-switch's choice. Its first sealed dry run stopped at a bug in a test helper under
+pandas 3.1, before any data were scored; the helper is fixed and the same run is queued again with the
+tool and its registered checks unchanged (docs/g2f-refold-0.1.0-rerun.md). The order in which
+candidate files would be uploaded in 2026 is fixed in advance, before any 2026 data exist
+(docs/g2f-2026-portfolio-0.1.0.md, provisional until the 2026 rules are read).
+
+**The kernel model is ready for a renamed release (g2f-refmodel 0.2.1, plan regression 4 of 4 held).**
+It finds the release files by role, `plan` lists exactly the folds that `all` will fit, and an optional
+argument sets how many hold-out seasons to fit (docs/g2f-refmodel-0.2.1-check.md).
 
 **The harness is confirmed by the organisers' own code (g2f-refmodel 0.1.2, graded, 5 of 5 held).**
 Their reference script, run unmodified under bWGR 2.2.13 (the release current during the 2024
@@ -84,6 +92,7 @@ scored by error; the 2026 metric is read when the training data are released (20
 | g2f-refmodel 0.1.2 | graded: **all 5 held (P11, G1, G2, P10, P12)** | the organisers' script under bWGR 2.2.13: **0.4377, its leaderboard score** (harness confirmed); full vs script 0.0039 apart, predictions r = 0.997; fails under bWGR 2.2.18 |
 | g2f-switch 0.1.0 | graded: **all 6 held (R1, Q1-Q5)**; **adopted as the 2026 default** | mix a = b = 0.5: **0.433** (2022: 0.362, best of all three); hindsight best on 2024 0.462 (a = 1, b = 0.5), reported, not claimed |
 | g2f-refmodel 0.2.0 check | regression 2 of 3 (K1 was a check/plan mismatch, fixed in 0.2.1); row-name check done | test fold reproduces **0.4416**; bWGR `IMP` drops row names in 2.2.18, keeps them in 2.2.13 |
+| g2f-refmodel 0.2.1 check | regression **4 of 4 held (K1, K2, K4, K5)** | not a score: `plan` lists the folds `all` fits (2024 release: 2023, 2022; `plan 4`: 2023-2020; `plan 0`: none) and finds renamed 2026-style files |
 | g2f-level 0.1.0 | graded: **3 of 6 held** (L1, L4, L5); L2, L3, L6 failed; **site history kept** | not an r study: environment level RMSE on 2024, chosen site_all 2.38 Mg/ha; hindsight best site_recent3 1.97, reported, not claimed |
 
 Tools for the 2026 season (training data released 2026-11-16):
@@ -95,7 +104,8 @@ Tools for the 2026 season (training data released 2026-11-16):
 | g2f-entry 0.2.0 | **checked on the 2024 release: all 5 checks held** (score unchanged to 6e-8 per environment; RMSE 2.90 Mg/ha vs 2.95 for the level alone and 3.19 for one constant) | `mgha`: turns scale-free predictions into Mg/ha per environment (site history for the level, 0.30 x the typical hybrid spread), leaving every within-environment r unchanged |
 | g2f-switch 0.1.0 `apply` | study graded (6 of 6) | mixes two prediction columns by hybrid category for a real upload (then `g2f_entry.py mgha`) |
 | g2f-predict 0.1.0 | **checked on the 2024 release: all 5 held** (M4 0.3018 and mix 0.4330 reproduced; 3 of 3 files valid, 10,057 rows; file scores equal column scores) | `plan` and `predict` for any release layout: M4, full and the mix, each as a validated Mg/ha upload file; never downloads |
-| g2f-refold 0.1.0 | **pre-registered** (2026-11-10); dry run on the 2024 release queued (D1-D6) | `choose`: types the test season and each hold-out season (new vs repeated hybrids) and picks the mix weights (a, b) on the hold-out seasons of the test season's type, for any release |
+| g2f-refmodel 0.2.1 (R) | **plan checked: 4 of 4 held** | the kernel ("full") model for any release layout: `plan` lists files and folds, `all` fits the test season and the chosen number of hold-out seasons |
+| g2f-refold 0.1.0 | **pre-registered** (2026-11-10); dry run v1 stopped at a test-helper bug (pandas 3.1), nothing scored; rerun v2 queued with the same checks (D1-D6) | `choose`: types the test season and each hold-out season (new vs repeated hybrids) and picks the mix weights (a, b) on the hold-out seasons of the test season's type, for any release |
 | g2f-level 0.1.0 | **checked on the 2024 release** (L1 reproduction held; 3 of 6 in all) | `choose`: six rules for each test environment's yield level, chosen on hold-out seasons by level RMSE; `entry_plan` hands the chosen levels to `g2f_entry.rescale` (standard library only) |
 | g2f-levelmeta 0.1.0 | **pre-registered** (2026-11-10); run on the 2024 release queued (M1-M5) | replays g2f-level's choice season by season with 1, 2, 4 or all earlier seasons and applies the pre-registered decision for 2026 (standard library only) |
 
@@ -155,14 +165,18 @@ See the result files in [`docs/`](docs/).
 - `docs/g2f-refmodel-0.2.0-check.md`, `dimcheck.R`: the regression of the release-discovering
   `g2f_refmodel.R` 0.2.0 and the check of which bWGR helper (`IMP`, `EigenGAU`, `K2X`) keeps a toy
   marker matrix's row names, under bWGR 2.2.13 and 2.2.18.
+- `docs/g2f-refmodel-0.2.1-check.md`, `regress_plan.py`: the `plan` regression of `g2f_refmodel.R` 0.2.1
+  (fold listing and the optional hold-out count; standard library only).
 - `docs/g2f-switch-0.1.0-prereg.md`, `docs/g2f-switch-0.1.0-result.md`, `g2f_switch.py`,
   `test_g2f_switch.py`: M4 and full mixed by hybrid category (`grade`), and the same mix for any
   prediction table (`apply`) (numpy + pandas).
 - `docs/g2f-predict-0.1.0.md`, `docs/g2f-predict-0.1.0-result.md`, `g2f_predict.py`,
   `test_g2f_predict.py`, `data/g2f-predict-expect-2024.json`: release-day entry builder (`plan`,
   `predict`) and its graded 2024 dry run.
-- `docs/g2f-refold-0.1.0.md`, `g2f_refold.py`, `test_g2f_refold.py`, `data/g2f-refold-expect-2024.json`:
-  re-chooses the mix weights on the hold-out seasons that match the test season's type, for any release.
+- `docs/g2f-refold-0.1.0.md`, `docs/g2f-refold-0.1.0-rerun.md`, `g2f_refold.py`, `test_g2f_refold.py`,
+  `data/g2f-refold-expect-2024.json`: re-chooses the mix weights on the hold-out seasons that match the
+  test season's type, for any release; the rerun note explains the test-helper fix.
+- `docs/g2f-2026-portfolio-0.1.0.md`: the provisional, pre-registered upload order for 2026.
 - `docs/g2f-level-0.1.0.md`, `docs/g2f-level-0.1.0-result.md`, `g2f_level.py`, `test_g2f_level.py`,
   `data/g2f-level-expect-2024.json`: chooses each test environment's yield level (Mg/ha) from six fixed
   rules on hold-out seasons, for an error-scored round, and its graded 2024 dry run (standard library
@@ -186,8 +200,8 @@ See the result files in [`docs/`](docs/).
   `g2f_refsplit.json`, `g2f_refr0.json`, `g2f_switch.json`, `g2f_cathistory.json`,
   `g2f_parents_2014_2024.csv`, `g2f_release_census_2024.json`, `g2f_entry_dryrun_2024.json`,
   `g2f_entry_mgha_2024.json`, `g2f_predict_2024.json`, `g2f_predict_plan.json`,
-  `g2f_refmodel_regress.json`, `dimcheck_2.2.13.json`, `dimcheck_2.2.18.json`, `g2f_level_2024.json`,
-  per-environment r and per-row prediction tables).
+  `g2f_refmodel_regress.json`, `g2f_refmodel_plan_regress.json`, `dimcheck_2.2.13.json`,
+  `dimcheck_2.2.18.json`, `g2f_level_2024.json`, per-environment r and per-row prediction tables).
 
 ```
 pip install numpy pandas
@@ -202,7 +216,8 @@ python g2f_ecreaction.py --data-dir data --out-dir results
 python g2f_gcablend.py --data-dir data --out-dir results
 # g2f-refmodel (R with bWGR and reshape2; the data folder must already hold the release files)
 Rscript run_ref.R script_model.R data results [<library folder with bWGR 2.2.13>]
-Rscript g2f_refmodel.R data results
+Rscript g2f_refmodel.R data results [all|test|plan] [n_holdouts]
+python3 regress_plan.py <folder holding plan2024/ sim/ plan4/ plan0/ from four `plan` runs>
 python g2f_refmodel.py --data-dir data --out-dir results --ref-script script_model.R
 python g2f_refcheck.py split --data-dir data --out-dir results
 python g2f_refcheck.py r0 --data-dir data --out-dir results --ref-pred results/ref_2024_predictions.csv --ref-script script_model.R
@@ -216,11 +231,13 @@ python g2f_entry.py dryrun-mgha --data-dir data --out-dir results --pred results
 python g2f_level.py choose --data-dir data --out-dir results --expect data/g2f-level-expect-2024.json --name g2f_level_2024
 python g2f_level.py choose --data-dir data --out-dir results --folds 9 --name g2f_level_folds9_2024
 python g2f_levelmeta.py --level-json results/g2f_level_folds9_2024.json --out-dir results --expect data/g2f-levelmeta-expect-2024.json --name g2f_levelmeta_2024
-# release day: list what a release holds, choose the mix weights on matching past seasons, then build
-# M4 / full / mix upload files in Mg/ha (validated)
+# release day: list what a release holds, fit the kernel model on the test season and hold-out seasons,
+# choose the mix weights on matching past seasons, then build M4 / full / mix upload files in Mg/ha
 python g2f_predict.py plan --data-dir <release folder> --out-dir results
-python g2f_refold.py choose --data-dir <release folder> --out-dir results --full-dir <preds/ from g2f_refmodel.R ... all> [--folds 2]
-python g2f_predict.py predict --data-dir <release folder> --out-dir results --full <preds/<season>.csv from g2f_refmodel.R> [--a 0.5 --b 0.5]
+Rscript g2f_refmodel.R <release folder> <out> plan 4
+Rscript g2f_refmodel.R <release folder> <out> all 4
+python g2f_refold.py choose --data-dir <release folder> --out-dir results --full-dir <out>/preds --folds 4
+python g2f_predict.py predict --data-dir <release folder> --out-dir results --full <out>/preds/<season>.csv [--a 0.5 --b 0.5]
 # if the round is scored by error: choose the level rule on the release's own hold-out seasons
 python g2f_level.py choose --data-dir <release folder> --out-dir results [--folds 2]
 # or by hand: mix two models by hybrid category, then predictions on any scale -> Mg/ha file
