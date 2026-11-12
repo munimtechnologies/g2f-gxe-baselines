@@ -12,12 +12,14 @@ genotype-by-environment (GxE) idea is tested on its own and pre-registered befor
 ## Where the entry model stands (read 2026-11-12)
 
 **The 2026 rules are published (About tab, read 2026-11-12): the winner has the highest mean
-per-location Pearson r, the best of a team's files counts, and no submission limit is stated.** Files
+per-location Pearson r and the best of a team's files counts.** The About tab states no submission
+limit, but the registration form every entrant confirms says "Only participating on ONE team (five
+submissions)", so five in total is treated as binding (docs/g2f-2026-portfolio-0.2.1.md). Files
 are absolute yield in Mg/ha at 15.5% moisture. Training data (2014-2025) go to registered entrants on
 2026-11-16; the leaderboard opens 2026-12-15 and closes 2027-01-15. The pre-registered upload order is
 now mapped to these rules (docs/g2f-2026-portfolio-0.2.0.md): the correlation branch (site-history
-levels; the error-metric level decision below is not used) and the best-file branch (every distinct
-candidate of the fixed six, in order).
+levels; the error-metric level decision below is not used) and the best-file branch (the first five
+distinct candidates of the fixed six, in order; if all six differ, "M4 alone" is the one not uploaded).
 
 The 2024 leaderboard is public (EvalAI challenge 2376): 64 entries, won at **0.4501**. Third place, at
 **0.4377**, is "Model 2022 (not competing)", a public reference script by one of the organisers that
@@ -193,7 +195,9 @@ See the result files in [`docs/`](docs/).
   the test-helper fix, and the result grades the 2024 dry run (6 of 6 held).
 - `docs/g2f-2026-portfolio-0.1.0.md`: the pre-registered upload order for 2026, fixed before the rules
   were published; `docs/g2f-2026-portfolio-0.2.0.md`: the same order mapped to the published 2026 rules
-  (mean per-location r, best file counts, no stated limit), with the compliance notes for release day.
+  (mean per-location r, best file counts), with the compliance notes for release day;
+  `docs/g2f-2026-portfolio-0.2.1.md`: the cap set to five in total, from the registration form, with
+  the table of which candidate is not uploaded for each possible refold choice.
 - `docs/g2f-2026-release-0.1.0.md`: pre-registered predictions of what the 2026 training release holds
   (layout, share of new hybrids, matched folds, checks, size, hybrids with neither parent seen), written
   before the release exists and graded by hand on release day.
@@ -276,6 +280,7 @@ BMC Research Notes (doi 10.1186/s13104-023-06421-z) and the 2024 competition not
 (doi 10.1186/s13104-026-07629-5). The 2024 leaderboard figures and rules are from EvalAI's public API
 (challenge 2376, phase split 5893). The 2026 trial design is from genomes2fields.org (project overview,
 read 2026-11-09); the 2026 rules are from the competition's About tab (maizegxeprediction.org/about,
-read 2026-11-12). This repository is not affiliated with G2F.
+read 2026-11-12) and its Step One registration form (read 2026-11-12). This repository is not affiliated
+with G2F.
 
 Licence: code Apache-2.0; text and results CC BY 4.0. Contact: MV2, Munim, Inc., mv2@munimtech.com.
